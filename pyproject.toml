@@ -5,13 +5,13 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "jigar"
+name = "medviz"
 authors = [
   {name = "Mohsen Hariri", email = "mhariri68@gmail.com"},
 ]
-description = "A [simple] [general-purpose] Python template 🐍🚀🎉🦕"
-version = "0.0.2"
-keywords = ["Boilerplate", "Template"]
+description = "Medical Image Visualization Tool 🐍🚀🎉🦕"
+version = "0.0.1"
+keywords = ["MRI", "CT"]
 license = {text = "GPL-3.0 License"}
 # https://github.com/pypi/warehouse/issues/869
 readme = "README.rst"
@@ -28,7 +28,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["pkg"]
+packages = ["medviz"]
 
 [tool.isort]
 profile = "black"
