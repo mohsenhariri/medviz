@@ -21,7 +21,14 @@ def plot_nii(path):
 
 image = plot_nii(
     "/media/mohsen/My Passport/dataset/IBSI/ibsi_1_ct_radiomics_phantom/nifti/image/phantom.nii.gz"
+
 )
+
+image = plot_nii(
+    "/media/mohsen/Mohsen2/share/Assets/Data/Florian_processed/labels_Res/349076_AX-HASTE-ng-lower-label_Res.nii"
+
+)
+
 
 print(image.shape)
 m, n, d = image.shape

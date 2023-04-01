@@ -1,7 +1,6 @@
 # https://www.gnu.org/software/make/manual/make.html
 
-# PYTHON := /media/mohsen/ssd500/compilers/py3_10_7/bin/python3.10
-PYTHON := /usr/bin/python3
+PYTHON := /home/mohsen/compiler/python/3.11.2/bin/python3.11
 DOCKER := /usr/bin/docker 
 
 PATH := $(VIRTUAL_ENV)/bin:$(PATH)

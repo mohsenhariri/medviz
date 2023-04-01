@@ -8,16 +8,35 @@ from pathlib import Path
 import nibabel as nib
 
 
+# def type_checker(path):
+#     if not isinstance(path, Path):
+#         if isinstance(path, str):
+#             path = Path(path)
+#         else:
+#             raise Exception("Input must be a path.")
+
+#     data = nib.load(path).get_fdata()
+
+#     return data
+
+import numpy as np
 def type_checker(path):
     if not isinstance(path, Path):
         if isinstance(path, str):
             path = Path(path)
         else:
             raise Exception("Input must be a path.")
+    
+    extension = path.suffix
 
-    data = nib.load(path).get_fdata()
+    if extension == ".npy":
+        data = np.load(path)
+
+    if extension == ".nii" or extension == ".gz":
+        data = nib.load(path).get_fdata()
 
     return data
+
 
 
 def plot_image_mask(path_image, path_mask) -> str:
@@ -29,10 +48,30 @@ def plot_image_mask(path_image, path_mask) -> str:
     return image, mask
 
 
+
+# image, mask = plot_image_mask(
+#     path_image="/media/mohsen/My Passport/dataset/IBSI/ibsi_1_ct_radiomics_phantom/nifti/image/phantom.nii.gz",
+#     path_mask="/media/mohsen/My Passport/dataset/IBSI/ibsi_1_ct_radiomics_phantom/nifti/mask/mask.nii.gz",
+# )file:///home/mohsen/Downloads/ExBox14/T1_brain.nii
+
+
+
 image, mask = plot_image_mask(
-    path_image="/media/mohsen/My Passport/dataset/IBSI/ibsi_1_ct_radiomics_phantom/nifti/image/phantom.nii.gz",
-    path_mask="/media/mohsen/My Passport/dataset/IBSI/ibsi_1_ct_radiomics_phantom/nifti/mask/mask.nii.gz",
+    path_image="/home/mohsen/Downloads/ExBox14/T1_brain.nii.gz",
+    path_mask = "/home/mohsen/Downloads/ExBox14/T1_brain_mask.nii.gz",
 )
+
+
+
+# import numpy as np
+# image =np.load("/media/mohsen/Mohsen2/share/Assets/Data/Florian_processed/MRI_NII_AX_RES_BF_NumPy/349076_AX_HASTE_lower_Res_crp_BF.npy")
+# mask = np.load("/media/mohsen/Mohsen2/share/Assets/Data/Florian_processed/labels_Res/349076_AX-HASTE-ng-lower-label_Res.nii")
+
+
+# image, mask = plot_image_mask(
+#     path_image="/media/mohsen/Mohsen2/share/Assets/Data/Florian_processed/MRI_NII_AX_RES_BF/349076_AX_HASTE_lower_Res_crp_BF.nii",
+#     path_mask="/media/mohsen/Mohsen2/share/Assets/Data/Florian_processed/labels_Res/349076_AX-HASTE-ng-lower-label_Res.nii",
+# )
 
 
 m, n, d = image.shape
@@ -95,9 +134,14 @@ ax_coronal = plt.axes([0.25, 0.025, 0.1, 0.04])
 ax_sagittal = plt.axes([0.4, 0.025, 0.1, 0.04])
 ax_reset = plt.axes([0.8, 0.025, 0.1, 0.04])
 
+
 btn_axial = gui.Button(ax_axial, "Axial", color="red", hovercolor="skyblue")
 btn_coronal = gui.Button(ax_coronal, "Coronal", color="red", hovercolor="skyblue")
-btn_sagittal = gui.Button(ax_sagittal, "Sagittal", color="red", hovercolor="skyblue")
+btn_sagittal = gui.Button(ax_sagittal, "Axial", color="red", hovercolor="skyblue")
+
+# btn_axial = gui.Button(ax_axial, "Axial", color="red", hovercolor="skyblue")
+# btn_coronal = gui.Button(ax_coronal, "Coronal", color="red", hovercolor="skyblue")
+# btn_sagittal = gui.Button(ax_sagittal, "Sagittal", color="red", hovercolor="skyblue")
 btn_reset = gui.Button(ax_reset, "Reset", color="gold", hovercolor="skyblue")
 
 
