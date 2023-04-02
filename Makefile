@@ -1,14 +1,20 @@
 # https://www.gnu.org/software/make/manual/make.html
+include .env.dev
+export
 
+VERSION := $(shell cat VERSION)
+PROJECT := $(shell basename $(CURDIR))
+
+# PYTHON := /usr/bin/python3
+# PYTHON := /media/mohsen/ssd500/compilers/py3_10_7/bin/python3.10
 PYTHON := /home/mohsen/compiler/python/3.11.2/bin/python3.11
+
 DOCKER := /usr/bin/docker 
 
 PATH := $(VIRTUAL_ENV)/bin:$(PATH)
 PY :=  $(VIRTUAL_ENV)/bin/python
 
-
-include .env.dev
-export
+ENV_NAME := $(shell $(PYTHON) -c 'import sys;print(f"env_{sys.platform}_{sys.version_info.major}.{sys.version_info.minor}")')
 
 SRC := pkg
 DIST := dist
@@ -16,17 +22,18 @@ BUILD := build
 
 PYTHONPATH := $(SRC):$(PYTHONPATH)
 
-
-.PHONY: env test all dev clean dev pyserve $(SRC) $(DIST) $(BUILD)
-.DEFAULT_GOAL := test
-.ONESHELL:
-
 ifeq ($(SSL), true)
 PROTOCOL := HTTPS
 else
 PROTOCOL := HTTP
 endif
 URL := $(PROTOCOL)://$(HOST):$(PORT)
+
+.PHONY: env test all dev clean dev pyserve $(SRC) $(DIST) $(BUILD)
+
+.DEFAULT_GOAL := test
+
+.ONESHELL:
 
 %: # https://www.gnu.org/software/make/manual/make.html#Automatic-Variables 
 		@:
@@ -55,20 +62,20 @@ clean:
 clcache: 
 		rm -r ./__pycache__
 
-env: 
-		$(PYTHON) -m venv env
+env: .gitignore exclude.lst .dockerignore
+		$(PYTHON) -m venv $(ENV_NAME)
+		@echo $(ENV_NAME) >> .gitignore
+		@echo $(ENV_NAME) >> exclude.lst
+		@echo $(ENV_NAME) >> .dockerignore
 
 check:
 		$(PY) -m ensurepip --default-pip
 		$(PY) -m pip install --upgrade pip setuptools wheel
 
 test:
-		echo $(PATH)
+		@echo $(PATH)
 		$(PY) --version
 		$(PY) -m pip --version
-
-test-os:
-		$(PY) -c 'import sys;print(sys.platform)'
 
 pi: 
 		$(PY) -m pip install $(filter-out $@,$(MAKECMDGOALS))
@@ -78,9 +85,11 @@ piu:
 		$(PY) -m pip install --upgrade $(filter-out $@,$(MAKECMDGOALS))
 		$(PY) -m pip freeze > requirements.txt
 
+pireq:
+		make piu black isort pylint mypy
+
 pia: requirements.txt
 		$(PY) -m pip install -r requirements.txt
-
 
 pkg-build: clean
 		$(PY) -m pip install --upgrade build
@@ -135,7 +144,7 @@ pkg-poetry-publish-test:
 pkg-poetry-publish:
 		poetry publish
 
-pylint:
+pylint-dev:
 		pylint --rcfile .pylintrc.dev $(SRC)
 
 pylint-prod:
@@ -153,6 +162,12 @@ type:
 type-prod:
 		mypy --config-file .mypy.ini.prod
 
+g-init:
+		touch .gitignore
+		git init
+		git add .
+		git commit -m "initial commit"
+
 g-commit: format type pylint
 		git commit -m "$(filter-out $@,$(MAKECMDGOALS))"
 
@@ -161,7 +176,6 @@ g-log:
 
 unittest:
 		$(PY) -m unittest $(SRC)/test_*.py
-
 
 script-upgrade:
 		./scripts/upgrade_dependencies.sh
