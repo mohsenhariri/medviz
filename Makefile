@@ -2,12 +2,14 @@
 include .env.dev
 export
 
+include *.make
+
 VERSION := $(shell cat VERSION)
 PROJECT := $(shell basename $(CURDIR))
 
-# PYTHON := /usr/bin/python3
+PYTHON := /usr/bin/python3
 # PYTHON := /media/mohsen/ssd500/compilers/py3_10_7/bin/python3.10
-PYTHON := /home/mohsen/compiler/python/3.11.2/bin/python3.11
+# PYTHON := /home/mohsen/compiler/python/3.11.2/bin/python3.11
 
 DOCKER := /usr/bin/docker 
 
@@ -16,9 +18,13 @@ PY :=  $(VIRTUAL_ENV)/bin/python
 
 ENV_NAME := $(shell $(PYTHON) -c 'import sys;print(f"env_{sys.platform}_{sys.version_info.major}.{sys.version_info.minor}")')
 
-SRC := pkg
+# SRC := pkg# just for this template
+SRC := $(PROJECT)# for a python package
 DIST := dist
 BUILD := build
+# PY_FILES = $(shell find $(SRC) -type f -name '*.py')
+PY_FILES := $(shell find $(SRC) -type f -name '*.py' | grep -v '^.*\/test_.*\.py$$')
+PY_FILES_TEST := $(shell find $(SRC) -type f -name 'test_*.py')
 
 PYTHONPATH := $(SRC):$(PYTHONPATH)
 
@@ -29,7 +35,7 @@ PROTOCOL := HTTP
 endif
 URL := $(PROTOCOL)://$(HOST):$(PORT)
 
-.PHONY: env test all dev clean dev pyserve $(SRC) $(DIST) $(BUILD)
+.PHONY: env test all dev clean dev pyserve gen-commands $(SRC) $(DIST) $(BUILD)
 
 .DEFAULT_GOAL := test
 
@@ -162,20 +168,8 @@ type:
 type-prod:
 		mypy --config-file .mypy.ini.prod
 
-g-init:
-		touch .gitignore
-		git init
-		git add .
-		git commit -m "initial commit"
-
-g-commit: format type pylint
-		git commit -m "$(filter-out $@,$(MAKECMDGOALS))"
-
-g-log:
-		git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-
-unittest:
-		$(PY) -m unittest $(SRC)/test_*.py
-
 script-upgrade:
 		./scripts/upgrade_dependencies.sh
+
+gen-commands:
+		$(foreach file,$(PY_FILES),$(shell echo "\n$(subst /,-,$(subst $(SRC)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> py.make))

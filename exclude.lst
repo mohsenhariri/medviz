@@ -3,3 +3,4 @@ env/*
 .mypy_cache/*
 .poetry/*
 env_linux_3.11
+env_linux_3.10
