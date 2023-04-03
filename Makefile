@@ -171,8 +171,9 @@ type-prod:
 script-upgrade:
 		./scripts/upgrade_dependencies.sh
 
+gen-commands:
+		$(foreach file,$(PY_FILES),$(shell echo "\n$(subst /,-,$(subst $(SRC)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> py.make))
 
 
 gen-commands:
 		$(foreach file,$(PY_FILES),$(shell echo "\n$(subst /,-,$(subst $(SRC)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> py.make))
-
