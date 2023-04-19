@@ -35,7 +35,7 @@ PROTOCOL := HTTP
 endif
 URL := $(PROTOCOL)://$(HOST):$(PORT)
 
-.PHONY: env test all dev clean dev pyserve gen-commands $(SRC) $(DIST) $(BUILD)
+.PHONY: env test all dev clean dev pyserve gen-commands $(SRC) $(DIST) $(BUILD) py.make
 
 .DEFAULT_GOAL := test
 
@@ -111,10 +111,12 @@ pkg-check:
 		$(PY) -m pip install --upgrade twine
 		twine check dist/*
 
-pkg-publish-test:
-		twine upload --config-file .pypirc.test -r testpypi dist/*  --verbose 
 
-pkg-publish:
+pkg-publish-test: .pypirc
+		twine upload --config-file .pypirc -r testpypi dist/*  --verbose 
+
+
+pkg-publish: .pypirc
 		twine upload --config-file .pypirc dist/* --verbose  
 
 pkg-flit-init:
@@ -171,9 +173,9 @@ type-prod:
 script-upgrade:
 		./scripts/upgrade_dependencies.sh
 
-gen-commands:
-		$(foreach file,$(PY_FILES),$(shell echo "\n$(subst /,-,$(subst $(SRC)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> py.make))
 
+temp-rm:
+		rm py.make
 
-gen-commands:
+gen-commands: temp-rm
 		$(foreach file,$(PY_FILES),$(shell echo "\n$(subst /,-,$(subst $(SRC)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> py.make))

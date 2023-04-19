@@ -20,13 +20,12 @@ def path_in(p: str, global_path=True) -> PathType:
     return path
 
 
-def path_out(p: str,global_path = True) -> PathType:
+def path_out(p: str, global_path=True) -> PathType:
     if p[0] == "/" or not global_path:  # Check whether p is absolute path
         path_output = p
     else:
         root_out = getenv("ROOT_OUT") or "."
         path_output = rf"{root_out}/{p}"
-
 
     path: PathType = Path(path_output)
     if not path.exists():

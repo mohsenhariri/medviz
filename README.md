@@ -1,9 +1,35 @@
 # MedViz
 
+## Usage
 
-## Required packages
+Install the package using pip
+
+```bash
+    pip install medviz
+```
+Import the package and use the layered_plot function
+
+```python
+    import medviz
+
+    medviz.layered_plot(image_path="dataset/1-1.nii", mask_paths=["dataset/small_bowel.nii", "dataset/1-1-label.nii"], mask_colors=["red", "yellow"], title="Layered Plot")
+```
+
+## Development
+
+### Setup
+
+- make env
+- source env_platform_ver/bin/activate
+- make
+- make check
+- make pireq
+### Required packages
+
 - Numpy
 - Matplotlib
+- Nibabel
+
 ### Slider- To do
 
 - [x] Max
@@ -12,11 +38,4 @@
 
 
 
-## Development
-
-make env
-source env_platform_ver/bin/activate
-make
-make check
-make pireq
 
