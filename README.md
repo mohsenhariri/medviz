@@ -2,7 +2,7 @@
 
 ## Usage
 
-Install the package using pip
+Install the [package](https://pypi.org/project/medviz/) using `pip`:
 
 ```bash
     pip install medviz
