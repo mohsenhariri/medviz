@@ -7,9 +7,9 @@ include *.make
 VERSION := $(shell cat VERSION)
 PROJECT := $(shell basename $(CURDIR))
 
-PYTHON := /usr/bin/python3
+# PYTHON := /usr/bin/python3
 # PYTHON := /media/mohsen/ssd500/compilers/py3_10_7/bin/python3.10
-# PYTHON := /home/mohsen/compiler/python/3.11.2/bin/python3.11
+PYTHON := /home/mohsen/compiler/python/3.11.2/bin/python3.11
 
 DOCKER := /usr/bin/docker 
 
@@ -117,7 +117,7 @@ pkg-publish-test: .pypirc
 
 
 pkg-publish: .pypirc
-		twine upload --config-file .pypirc dist/* --verbose  
+		twine upload  dist/* --verbose  
 
 pkg-flit-init:
 		$(PY) -m pip install --upgrade flit

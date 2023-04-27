@@ -1,11 +1,12 @@
 import medviz
 
 
+
 # medviz.layered_plot("data/ct.nii.gz", ["data/lung_mask.nii.gz", "data/heart_mask.nii.gz"], ["red", "yellow"], "Layered Plot")
 
 medviz.layered_plot(image_path="dataset/1-1.nii", mask_paths=["dataset/small_bowel.nii"], mask_colors=["red"], title="Layered Plot")
 
-medviz.layered_plot(image_path="dataset/1-1.nii", mask_paths=["dataset/small_bowel.nii", "dataset/1-1-label.nii"], mask_colors=["red", "yellow"], title="Layered Plot")
+medviz.layered_plot(image_path="dataset/1-1.nii", mask_colors=["red", "yellow"], title="Layered Plot")
 
 
 medviz.layered_plot(

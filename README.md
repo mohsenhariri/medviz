@@ -36,6 +36,8 @@ Import the package and use the layered_plot function
 - [x] Min
 - [x] Midian
 
+1. Plot layered images and masks
+2. Generate Gif
 
 
 

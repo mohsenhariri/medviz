@@ -22,10 +22,11 @@ classifiers = [
 dependencies = [
   # "google-api-python-client==2.60.0",
   # "google-auth-oauthlib==0.5.2",
-  "numpy==1.21.2",
+  # "numpy==*",
   'importlib-metadata; python_version<"3.8"',
-  "matplotlib==3.4.3",
-  "nibabel==3.2.1",
+  # "matplotlib==*",
+  # "nibabel==*",
+  # "imageio==*",
 ]
 
 [tool.setuptools]
