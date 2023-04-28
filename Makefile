@@ -7,24 +7,24 @@ include *.make
 VERSION := $(shell cat VERSION)
 PROJECT := $(shell basename $(CURDIR))
 
-# PYTHON := /usr/bin/python3
-# PYTHON := /media/mohsen/ssd500/compilers/py3_10_7/bin/python3.10
-PYTHON := /home/mohsen/compiler/python/3.11.2/bin/python3.11
+PYTHON := /usr/bin/python3
+PYTHON := /media/storage/compilers/py3_10_7/bin/python3.10
 
 DOCKER := /usr/bin/docker 
 
 PATH := $(VIRTUAL_ENV)/bin:$(PATH)
 PY :=  $(VIRTUAL_ENV)/bin/python
 
-ENV_NAME := $(shell $(PYTHON) -c 'import sys;print(f"env_{sys.platform}_{sys.version_info.major}.{sys.version_info.minor}")')
+ENV_NAME := $(shell $(PYTHON) -c 'import sys;import socket;print(f"env_{socket.gethostname()}_{sys.platform}_{sys.version_info.major}.{sys.version_info.minor}")')
 
-# SRC := pkg# just for this template
 SRC := $(PROJECT)# for a python package
 DIST := dist
 BUILD := build
 # PY_FILES = $(shell find $(SRC) -type f -name '*.py')
 PY_FILES := $(shell find $(SRC) -type f -name '*.py' | grep -v '^.*\/test_.*\.py$$')
 PY_FILES_TEST := $(shell find $(SRC) -type f -name 'test_*.py')
+
+IGNORE_LIST := .gitignore .dockerignore exclude.lst
 
 PYTHONPATH := $(SRC):$(PYTHONPATH)
 
@@ -35,7 +35,7 @@ PROTOCOL := HTTP
 endif
 URL := $(PROTOCOL)://$(HOST):$(PORT)
 
-.PHONY: env test all dev clean dev pyserve gen-commands $(SRC) $(DIST) $(BUILD) py.make
+.PHONY: env test all dev clean dev pyserve gen-commands $(SRC) $(DIST) $(BUILD)
 
 .DEFAULT_GOAL := test
 
@@ -50,29 +50,21 @@ cert: # HTTPS server
 		openssl req -x509 -new -config ./certs/openssl.conf -out ./certs/cert.pem -keyout ./certs/key.pem ;  else \
 		openssl req -x509 -nodes -newkey rsa:4096 -out ./certs/cert.pem -keyout ./certs/key.pem -sha256 -days 365 ;fi
 
-docker-up:
-		$(DOCKER) compose -p $(PROJECT) --env-file ./config/.env.docker -f ./config/compose.yaml up -d
-
-docker-down:
-		$(DOCKER) compose -p $(PROJECT) -f ./config/compose.yaml down
-
-docker-build:
-		$(DOCKER) build -t $(USER)/$(PROJECT):$(VERSION) .
-
-docker-run:
-		 $(DOCKER) container run --name $(PROJECT) -it  $(USER)/$(PROJECT):$(VERSION) /bin/bash
-
 clean:
 		rm -rf ./$(DIST)/* ./$(BUILD)/*
 
 clcache: 
 		rm -r ./__pycache__
 
-env: .gitignore exclude.lst .dockerignore
-		$(PYTHON) -m venv $(ENV_NAME)
-		@echo $(ENV_NAME) >> .gitignore
-		@echo $(ENV_NAME) >> exclude.lst
-		@echo $(ENV_NAME) >> .dockerignore
+env: $(IGNORE_LIST)
+		if [ ! -d $(ENV_NAME) ] ; then \
+			$(PYTHON) -m venv $(ENV_NAME) && \
+			for file in $(IGNORE_LIST); do \
+				if ! grep -q $(ENV_NAME) $$file; then \
+					echo $(ENV_NAME) >> $$file; \
+				fi \
+			done; \
+		fi
 
 check:
 		$(PY) -m ensurepip --default-pip
@@ -111,13 +103,11 @@ pkg-check:
 		$(PY) -m pip install --upgrade twine
 		twine check dist/*
 
-
-pkg-publish-test: .pypirc
-		twine upload --config-file .pypirc -r testpypi dist/*  --verbose 
-
+pkg-publish-test: .pypirc.test
+		twine upload --config-file .pypirc.test -r testpypi dist/*  --verbose 
 
 pkg-publish: .pypirc
-		twine upload  dist/* --verbose  
+		twine upload --config-file .pypirc dist/* --verbose  
 
 pkg-flit-init:
 		$(PY) -m pip install --upgrade flit
@@ -172,7 +162,6 @@ type-prod:
 
 script-upgrade:
 		./scripts/upgrade_dependencies.sh
-
 
 temp-rm:
 		rm py.make

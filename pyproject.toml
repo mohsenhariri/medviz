@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 name = "medviz"
 authors = [{ name = "Mohsen Hariri", email = "mohsen.hariri@case.eud" }]
 description = "Medical Image Visualization Tool 🐍🚀🎉🦕"
-version = "0.0.2"
+version = "0.1.1"
 keywords = ["MRI", "CT"]
 license = { text = "GPL-3.0 License" }
 # https://github.com/pypi/warehouse/issues/869
@@ -22,11 +22,11 @@ classifiers = [
 dependencies = [
   # "google-api-python-client==2.60.0",
   # "google-auth-oauthlib==0.5.2",
-  # "numpy==*",
+  "numpy >= 1.19.5",
   'importlib-metadata; python_version<"3.8"',
-  # "matplotlib==*",
-  # "nibabel==*",
-  # "imageio==*",
+  "matplotlib >= 3.3.4",
+  "nibabel >= 3.2.1",
+  "imageio >= 2.9.0",
 ]
 
 [tool.setuptools]
