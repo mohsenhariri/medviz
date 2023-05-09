@@ -1,6 +1,7 @@
 import nibabel as nib
 import numpy as np
 
+
 def get_characteristics(mask_path) -> dict:
     """
     This function takes in a path to a mask and returns a dictionary of characteristics of the mask.
