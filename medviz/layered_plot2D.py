@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider
 
 import medviz as viz
 
@@ -47,8 +46,6 @@ def layered_plot_data2D(
     save_path=None,
 ):
     print("Loading images...")
-
-    assert_shape(image_data + masks_data)
 
     num_masks = len(masks_data)
 
