@@ -1,9 +1,5 @@
 import secrets
 
-import nibabel as nib
-import numpy as np
-
-
 def assert_shape(arr: list) -> tuple:
     """
     Asserts that all segments have the same shape as the image
@@ -39,21 +35,6 @@ def generate_mask_colors(num_masks, mask_colors=None):
                 f"Number of masks ({num_masks}) does not match number of colors ({len(mask_colors)})"
             )
 
-
-def mask_path_to_data(mask_path):
-    mask = nib.load(mask_path)
-    mask_data = mask.get_fdata()
-    mask_data_bool = mask_data.astype(np.bool_)
-    mask_data_bool_rot = np.flip(np.rot90(mask_data_bool, axes=(1, 0)), axis=1)
-    # mask_data = np.ma.masked_where(mask_data == False, mask_data)
-    return mask_data_bool_rot
-
-
-def image_path_to_data(mask_path):
-    image = nib.load(mask_path)
-    image_data = image.get_fdata()
-    image_data_rot = np.flip(np.rot90(image_data, axes=(1, 0)), axis=1)
-    return image_data_rot
 
 
 def plot_image(ax, image_data, cmap="gray"):

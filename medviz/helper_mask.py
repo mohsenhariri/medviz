@@ -79,3 +79,37 @@ def significant_slice_idx_data(mask_bool) -> tuple:
     most_value_nonzero_slices = most_value_slices[:num_nonzero_slices]
 
     return most_value_nonzero_slices, num_nonzero_slices
+
+
+def mask_path_to_data_ax(mask_path):
+    mask = nib.load(mask_path)
+    mask_data = mask.get_fdata()
+
+    mask_data_bool = mask_data.astype(np.bool_)
+    mask_data_bool_rot = np.flip(np.rot90(mask_data_bool, axes=(1, 0)), axis=1)
+    # mask_data = np.ma.masked_where(mask_data == False, mask_data)
+    return mask_data_bool_rot
+
+def mask_path_to_data_sag(mask_path):
+    mask = nib.load(mask_path)
+    mask_data = mask.get_fdata()
+
+    mask_data_bool = mask_data.astype(np.bool_)
+    mask_data_bool_rot = np.flip(np.rot90(mask_data_bool, axes=(1, 2)), axis=1)
+    # mask_data = np.ma.masked_where(mask_data == False, mask_data)
+    return mask_data_bool_rot
+
+def image_path_to_data_ax(mask_path):
+    image = nib.load(mask_path)
+    image_data = image.get_fdata()
+    image_data_rot = np.flip(np.rot90(image_data, axes=(1, 0)), axis=1)
+    return image_data_rot
+
+def image_path_to_data_sag(mask_path):
+    image = nib.load(mask_path)
+    image_data = image.get_fdata()
+
+    image_data_rot = np.flip(np.rot90(image_data, axes=(1, 2)), axis=1)
+    return image_data_rot
+
+
