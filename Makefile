@@ -8,7 +8,7 @@ VERSION := $(shell cat VERSION)
 PROJECT := $(shell basename $(CURDIR))
 
 PYTHON := /usr/bin/python3
-PYTHON := /media/storage/compilers/py3_10_7/bin/python3.10
+# PYTHON := /media/storage/compilers/py3_10_7/bin/python3.10
 
 DOCKER := /usr/bin/docker 
 
@@ -20,9 +20,14 @@ ENV_NAME := $(shell $(PYTHON) -c 'import sys;import socket;print(f"env_{socket.g
 SRC := $(PROJECT)# for a python package
 DIST := dist
 BUILD := build
+
+API := api
 # PY_FILES = $(shell find $(SRC) -type f -name '*.py')
 PY_FILES := $(shell find $(SRC) -type f -name '*.py' | grep -v '^.*\/test_.*\.py$$')
 PY_FILES_TEST := $(shell find $(SRC) -type f -name 'test_*.py')
+# PY_FILES_TEST := $(subst /,-,$(subst $(SRC)/,,$(PY_FILES_TEST)))
+PY_FILES_API := $(shell find $(API) -type f -name '*.py')
+
 
 IGNORE_LIST := .gitignore .dockerignore exclude.lst
 
@@ -35,7 +40,7 @@ PROTOCOL := HTTP
 endif
 URL := $(PROTOCOL)://$(HOST):$(PORT)
 
-.PHONY: env test all dev clean dev pyserve gen-commands $(SRC) $(DIST) $(BUILD)
+.PHONY: env test all dev clean dev pyserve gen-commands $(SRC) $(DIST) $(BUILD) $(API)
 
 .DEFAULT_GOAL := test
 
@@ -163,8 +168,13 @@ type-prod:
 script-upgrade:
 		./scripts/upgrade_dependencies.sh
 
-temp-rm:
-		rm py.make
+clean-commands:
+		head -n 3 py.make > temp.txt && mv temp.txt py.make
+		head -n 3 api.make > temp.txt && mv temp.txt api.make
 
-gen-commands: temp-rm
+gen-commands: clean-commands
 		$(foreach file,$(PY_FILES),$(shell echo "\n$(subst /,-,$(subst $(SRC)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> py.make))
+		$(foreach file,$(PY_FILES_API),$(shell echo "\n$(subst /,-,$(subst $(API)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> api.make))
+
+backup:
+		tar --exclude-from exclude.lst -czvf /home/mohsen/backup/$(PROJECT).tar.gz ../$(PROJECT)

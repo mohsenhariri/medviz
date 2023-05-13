@@ -34,3 +34,6 @@ packages = ["medviz"]
 
 [tool.isort]
 profile = "black"
+known_first_party = "medviz"
+skip_glob = ["**/__init__.py"]
+

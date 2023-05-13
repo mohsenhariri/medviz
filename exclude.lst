@@ -2,8 +2,11 @@
 env/*
 .mypy_cache/*
 .poetry/*
+*.pyc
 env_linux_3.9
+env_linux_3.10
 env_linux_3.11
-env_linux_3.10
-env_linux_3.10
 env_mohsen-invent_linux_3.10
+env_fes-local_linux_3.11
+env_fesen-cs_linux_3.10
+env_fesen-cs_linux_3.11
