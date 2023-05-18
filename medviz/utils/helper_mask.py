@@ -46,17 +46,15 @@ def significant_slice_idx(mask_path) -> tuple:
     :param mask_path: path to the mask
     :return: a tuple of the most significant slice index and the number of nonzero slices
     """
-
-    if get_characteristics(mask_path)["mask_type"] != "Binary":
-        raise ValueError("The mask must be binary.")
-
     mask_nb = nib.load(mask_path)
     mask = mask_nb.get_fdata()
-    mask_bool = mask.astype(np.bool_)
 
-    most_value_nonzero_slices, num_nonzero_slices = significant_slice_idx_data(
-        mask_bool
-    )
+    if get_characteristics(mask_path)["mask_type"] != "Binary":
+        print(f"Mask {mask_path} is not binary.")
+    else:
+        mask = mask.astype(np.bool_)
+
+    most_value_nonzero_slices, num_nonzero_slices = significant_slice_idx_data(mask)
 
     return most_value_nonzero_slices, num_nonzero_slices
 
@@ -79,6 +77,13 @@ def significant_slice_idx_data(mask_bool) -> tuple:
     most_value_nonzero_slices = most_value_slices[:num_nonzero_slices]
 
     return most_value_nonzero_slices, num_nonzero_slices
+
+
+def convert_mask(mask_path, true_value=1):
+    mask = nib.load(mask_path)
+    mask_data = mask.get_fdata()
+    mask_data_bool = np.where(mask_data == true_value, True, False)
+    return mask_data_bool
 
 
 def mask_path_to_data_ax(mask_path):

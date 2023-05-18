@@ -6,8 +6,10 @@ from matplotlib.widgets import Slider
 import medviz as viz
 
 assert_shape = viz.assert_shape
-mask_path_to_data = viz.mask_path_to_data
-image_path_to_data = viz.image_path_to_data
+
+image_path_to_data = viz.image_path_to_data_ax
+mask_path_to_data = viz.mask_path_to_data_ax
+
 generate_mask_colors = viz.generate_mask_colors
 plot_image = viz.plot_image
 plot_contour = viz.plot_contour

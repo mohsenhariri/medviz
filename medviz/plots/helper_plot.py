@@ -1,4 +1,5 @@
 import secrets
+from pathlib import Path
 
 
 def assert_shape(arr: list) -> tuple:
@@ -41,6 +42,13 @@ def plot_image(ax, image_data, cmap="gray"):
     ax.imshow(image_data, cmap=cmap)
 
 
+def plot_image_imshow(ax, arr, cmap="gray", origin="lower", title="", RGB=False):
+    # ax.imshow(arr, cmap=cmap, origin=origin)
+    ax.imshow(arr, cmap=cmap)
+
+    ax.set_title(title)
+
+
 def plot_mask_neighbor(ax, mask_data, cmap="jet", alpha=0.3):
     # ax.imshow(mask_data, cmap=cmap, alpha=alpha, interpolation="bilinear", vmin=0, vmax=1)
     ax.imshow(mask_data, cmap=cmap, alpha=alpha)
@@ -53,3 +61,16 @@ def plot_mask_neighbor(ax, mask_data, cmap="jet", alpha=0.3):
 
 def plot_contour(ax, mask_data, color, levels=[0.5]):
     ax.contour(mask_data, colors=color, levels=levels)
+
+
+def save_image(plt, save_path):
+    if isinstance(save_path, str):
+        save_path = Path(save_path)
+
+    if save_path.suffix != ".png":
+        save_path = save_path.with_suffix(".png")
+
+    if not save_path.parent.exists():
+        save_path.parent.mkdir(parents=True)
+
+    plt.savefig(save_path)
