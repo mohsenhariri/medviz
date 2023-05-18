@@ -2,23 +2,53 @@
 # Don't edit this file manually.
 # Run the module's apis.
 
-plot_image_examples:
-		/media/storage/github/mohsen2/medviz/env_fes-local_linux_3.11/bin/python api/plot_image_examples.py
+crohn3_match_image_mask:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/crohn3_match_image_mask.py
 
-utility:
-		/media/storage/github/mohsen2/medviz/env_fes-local_linux_3.11/bin/python api/utility.py
+crohn5_collage:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/crohn5_collage.py
+
+cp1:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/cp1.py
+
+plot_examples:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/plot_examples.py
+
+crohn2_convert_image_npy:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/crohn2_convert_image_npy.py
+
+utility_example:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/utility_example.py
+
+overlap:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/overlap.py
+
+preprocessing-mask_schema:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/preprocessing/mask_schema.py
+
+preprocessing-mask_profile:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/preprocessing/mask_profile.py
+
+plot_image_examples:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/plot_image_examples.py
+
+utils-arr:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/utils/arr.py
 
 layered_plot_examples:
-		/media/storage/github/mohsen2/medviz/env_fes-local_linux_3.11/bin/python api/layered_plot_examples.py
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/layered_plot_examples.py
+
+crohn4_vis:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/crohn4_vis.py
+
+crohn1_convert_mask_binary_npy:
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/crohn1_convert_mask_binary_npy.py
 
 layered_plot2D_examples:
-		/media/storage/github/mohsen2/medviz/env_fes-local_linux_3.11/bin/python api/layered_plot2D_examples.py
-
-generate_gif:
-		/media/storage/github/mohsen2/medviz/env_fes-local_linux_3.11/bin/python api/generate_gif.py
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/layered_plot2D_examples.py
 
 plot_image_masks:
-		/media/storage/github/mohsen2/medviz/env_fes-local_linux_3.11/bin/python api/plot_image_masks.py
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/plot_image_masks.py
 
 gif_example:
-		/media/storage/github/mohsen2/medviz/env_fes-local_linux_3.11/bin/python api/gif_example.py
+		/media/storage/github/mohsen2/medviz/env_home_linux_3.11/bin/python api/gif_example.py
