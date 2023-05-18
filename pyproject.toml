@@ -23,15 +23,18 @@ classifiers = [
 dependencies = [
   'importlib-metadata; python_version<"3.8"',
   "numpy >= 1.19.5",
+  "pandas >= 1.2.4",
   "matplotlib >= 3.3.4",
   "nibabel >= 3.2.1",
   "imageio >= 2.9.0",
   "scikit-image >= 0.18.3",
   "tabulate >= 0.8.9",
+  "pydicom >= 2.1.2",
 ]
 
 [tool.setuptools]
-packages = ["medviz"]
+packages = ["medviz","medviz.multimodal"]
+
 
 [tool.setuptools.dynamic]
 # version = { attr = "medviz.__version__" }

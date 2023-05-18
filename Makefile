@@ -95,6 +95,7 @@ pia: requirements.txt
 		$(PY) -m pip install -r requirements.txt
 
 pkg-build: clean
+		# cp VERSION $(SRC)
 		$(PY) -m pip install --upgrade build
 		$(PY) -m build
 

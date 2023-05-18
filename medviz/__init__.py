@@ -31,3 +31,15 @@ from .plots.plot3d.images import (
 )
 
 # from .plots.gif import gif, gif_slices, gif_non, gif_reference
+
+
+from .multimodal import save_dicom_metadata, filter_dicom
+
+# def version():
+#     with open("VERSION", "r") as f:
+#         version = f.read().strip()
+#     return version
+
+# __version__ = version()
+
+__version__ = "0.8.8"
