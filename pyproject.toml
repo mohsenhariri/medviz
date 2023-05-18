@@ -6,9 +6,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "medviz"
+dynamic = ["version"]
 authors = [{ name = "Mohsen Hariri", email = "mohsen.hariri@case.eud" }]
 description = "Medical Image Visualization Tool 🐍🚀🎉🦕"
-version = "0.1.1"
+# version = "0.4.4"
 keywords = ["MRI", "CT"]
 license = { text = "GPL-3.0 License" }
 # https://github.com/pypi/warehouse/issues/869
@@ -20,20 +21,29 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 dependencies = [
-  # "google-api-python-client==2.60.0",
-  # "google-auth-oauthlib==0.5.2",
-  "numpy >= 1.19.5",
   'importlib-metadata; python_version<"3.8"',
+  "numpy >= 1.19.5",
   "matplotlib >= 3.3.4",
   "nibabel >= 3.2.1",
   "imageio >= 2.9.0",
+  "scikit-image >= 0.18.3",
+  "tabulate >= 0.8.9",
 ]
 
 [tool.setuptools]
 packages = ["medviz"]
 
+[tool.setuptools.dynamic]
+# version = { attr = "medviz.__version__" }
+version = {file = ["VERSION"]}
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.ruff]
+
 [tool.isort]
 profile = "black"
 known_first_party = "medviz"
 skip_glob = ["**/__init__.py"]
-
