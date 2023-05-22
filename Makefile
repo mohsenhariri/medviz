@@ -15,13 +15,16 @@ DOCKER := /usr/bin/docker
 PATH := $(VIRTUAL_ENV)/bin:$(PATH)
 PY :=  $(VIRTUAL_ENV)/bin/python
 
+ENV_PATH := $(HOME)/envs/github/$(PROJECT)
 ENV_NAME := $(shell $(PYTHON) -c 'import sys;import socket;print(f"env_{socket.gethostname()}_{sys.platform}_{sys.version_info.major}.{sys.version_info.minor}")')
 
 SRC := $(PROJECT)# for a python package
 DIST := dist
 BUILD := build
-
 API := api
+BACKUP_DIR := $(HOME)/backup/$(PROJECT)
+SYNC_DIR := $(HOME)/sync
+
 # PY_FILES = $(shell find $(SRC) -type f -name '*.py')
 PY_FILES := $(shell find $(SRC) -type f -name '*.py' | grep -v '^.*\/test_.*\.py$$')
 PY_FILES_TEST := $(shell find $(SRC) -type f -name 'test_*.py')
@@ -56,12 +59,13 @@ cert: # HTTPS server
 		openssl req -x509 -nodes -newkey rsa:4096 -out ./certs/cert.pem -keyout ./certs/key.pem -sha256 -days 365 ;fi
 
 clean:
-		rm -rf ./$(DIST)/* ./$(BUILD)/*
+	rm -rf ./$(DIST)/* ./$(BUILD)/*
 
 clcache: 
 		rm -r ./__pycache__
 
-env: $(IGNORE_LIST)
+
+env-local: $(IGNORE_LIST)
 		if [ ! -d $(ENV_NAME) ] ; then \
 			$(PYTHON) -m venv $(ENV_NAME) && \
 			for file in $(IGNORE_LIST); do \
@@ -70,6 +74,10 @@ env: $(IGNORE_LIST)
 				fi \
 			done; \
 		fi
+
+env:
+		if [ ! -d $(ENV_PATH)/$(ENV_NAME) ] ; then \
+			$(PYTHON) -m venv $(ENV_PATH)/$(ENV_NAME); fi
 
 check:
 		$(PY) -m ensurepip --default-pip
@@ -169,8 +177,8 @@ type-prod:
 script-upgrade:
 		./scripts/upgrade_dependencies.sh
 
-clean-commands:
-		head -n 3 py.make > temp.txt && mv temp.txt py.make
+clean-commands: py.make api.make
+		head -n 5 py.make > temp.txt && mv temp.txt py.make
 		head -n 3 api.make > temp.txt && mv temp.txt api.make
 
 gen-commands: clean-commands
@@ -178,4 +186,9 @@ gen-commands: clean-commands
 		$(foreach file,$(PY_FILES_API),$(shell echo "\n$(subst /,-,$(subst $(API)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> api.make))
 
 backup:
-		tar --exclude-from exclude.lst -czvf /home/mohsen/backup/$(PROJECT).tar.gz ../$(PROJECT)
+		if [ ! -d "$(BACKUP_DIR)" ]; then mkdir -p $(BACKUP_DIR); fi
+		tar --exclude-from exclude.lst -czvf $(BACKUP_DIR)/$(PROJECT)_$$(date +%Y%m%d_%H-%M-%S).tar.gz ../$(PROJECT)
+
+sync-repos:
+		if [ ! -d "$(SYNC_DIR)" ]; then mkdir -p $(SYNC_DIR); fi
+		rsync -auv --exclude-from=./exclude.lst  . $(SYNC_DIR)/$(PROJECT)
