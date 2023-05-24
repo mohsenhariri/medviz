@@ -1,4 +1,5 @@
 from pathlib import Path
 from typing import Iterable, Union
 
-PathType = Union[str, Path, Iterable[str], Iterable[Path]]
+PathTypeIter = Union[str, Path, Iterable[str], Iterable[Path]]
+PathType = Union[str, Path]
