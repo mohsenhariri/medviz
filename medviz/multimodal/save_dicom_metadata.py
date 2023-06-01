@@ -21,9 +21,7 @@ def read_dicom_metadata(filepath):
     return metadata
 
 
-def save_dicom_metadata(
-    base_path, id_func=lambda x: x, pattern="**/*.dcm", save_path="./"
-):
+def save_dicom_metadata(base_path, id_func=lambda x: x, pattern="**/*.dcm", save_path: str or Path = "./"):
     paths = Path(base_path).glob(pattern)
     metadata_list = []
 

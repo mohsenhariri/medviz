@@ -1,5 +1,6 @@
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
 
 
 def filter_dicom(path_csv, series_description, save_path=None):
@@ -15,5 +16,5 @@ def filter_dicom(path_csv, series_description, save_path=None):
         save_path = save_path / Path("metadata.csv")
 
         df.to_csv(save_path, index=False)
-    
+
     return df

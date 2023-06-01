@@ -33,11 +33,23 @@ Import the package and use the layered_plot function
 - make
 - make check
 - make pireq
+- 
 ### Required packages
 
 - Numpy
 - Matplotlib
+- Pandas
 - Nibabel
+- Pydicom
+- Tabulate
+
+### Matplotlib Backend
+If your OS doesn't have a backend GUI to render Matplotlib, you need to install pyqt5 (via PIP), then set `QT_QPA_PLATFORM=wayland` in your environment variables.
+
+```bash
+    make piu pyqt5
+    export QT_QPA_PLATFORM=wayland
+```
 
 ### Slider- To do
 
@@ -78,7 +90,9 @@ inpute:
   
 
 ```python
-plot2d.image_masks()
+viz.plot2d_layered_path()
+viz.plot2d_layered_array()
+
 ```
 
 ## Interactive plots
@@ -102,5 +116,7 @@ inpute:
 plot3d.images_masks()
 ```
 
+
+# Feature Excraction
 
 
