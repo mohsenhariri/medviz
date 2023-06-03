@@ -2,7 +2,8 @@ from .custom_type import PathType
 from .utility import now
 from .array_profile import profile
 from .array_threshold import compute_thresholds
-from .helper_path import path_in, save_path_file, save_path_dir
+# from .helper_path import path_in, save_path_file, save_path_dir
+
 from .helper_mask import (
     get_characteristics,
     significant_slice_idx,
@@ -14,4 +15,6 @@ from .helper_mask import (
     mask_expand,
     convert_mask,
 )
+from .helper_path import path_in, save_path_file, save_path_dir
+
 from .reader import reader, convert_arr

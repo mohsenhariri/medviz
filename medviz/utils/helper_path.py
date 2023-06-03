@@ -1,5 +1,6 @@
 from os import getenv
 from pathlib import Path
+from .utility import now
 
 
 def path_in(path: str or Path, env: bool = False) -> Path:
@@ -58,7 +59,7 @@ def path_out_file(path: str or Path, suffix: str or None, env: bool = False) -> 
     return path
 
 
-def save_path_file(save_path: str or Path, suffix: str or None) -> Path:
+def save_path_file(save_path: str or Path, suffix: str or None = None) -> Path:
     if isinstance(save_path, str):
         save_path = Path(save_path)
 
@@ -70,6 +71,8 @@ def save_path_file(save_path: str or Path, suffix: str or None) -> Path:
 
     if not save_path.parent.exists():
         save_path.parent.mkdir(parents=True)
+    elif save_path.exists():
+        save_path = save_path.with_stem(save_path.stem + "_" + now())
 
     return save_path
 
@@ -79,7 +82,7 @@ def save_path_dir(save_path: str or Path) -> Path:
         save_path = Path(save_path)
 
     if not isinstance(save_path, Path):
-        raise TypeError(f"save_path must be a str or Path, not {type(save_path)}")
+        raise TypeError(f"save_path must be a STRING or PATH, not {type(save_path)}")
 
     if not save_path.exists():
         save_path.mkdir(parents=True)
