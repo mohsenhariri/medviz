@@ -2,15 +2,14 @@ from pathlib import Path
 
 import pandas as pd
 
-import medviz as viz
+from ..utils import get_characteristics, path_in, save_path_file, significant_slice_idx
 
 
 def generate_mask_schema(
-    dataset_path,
+    masks_path: str or Path,
     id_func=lambda x: x,
-    mask_format=".nii",
-    output_path=r"./",
-    output_name="mask_schema.csv",
+    mask_extension=None,
+    save_path: str or Path = Path("./output/mask_profile.csv"),
 ):
     df_dict = {
         "id": [],
@@ -23,16 +22,30 @@ def generate_mask_schema(
         "num_nonzero_slices": [],
     }
 
-    mask_paths = dataset_path.glob(rf"**/*{mask_format}")
+    dataset_path = path_in(masks_path, env=False)
+
+    if mask_extension is None:
+        extensions = set()
+
+        for file_path in dataset_path.rglob("*"):
+            if file_path.is_file():
+                file_extension = file_path.suffix.lower()
+
+                extensions.add(file_extension)
+
+        for extension in extensions:
+            if extension in [".nii", ".nii.gz", ".dcm"]:
+                mask_extension = extension
+                break
+
+    mask_paths = dataset_path.glob(rf"**/*{mask_extension}")
 
     for mask_path in mask_paths:
         # try:
         id = id_func(mask_path.stem)
         print(id)
-        mask_characteristics = viz.get_characteristics(mask_path)
-        most_value_nonzero_slices, num_nonzero_slices = viz.significant_slice_idx(
-            mask_path
-        )
+        mask_characteristics = get_characteristics(mask_path)
+        most_value_nonzero_slices, num_nonzero_slices = significant_slice_idx(mask_path)
         df_dict["id"].append(id)
         df_dict["path"].append(Path(*mask_path.parts[-3:]))
         df_dict["shape"].append(mask_characteristics["shape"])
@@ -47,11 +60,8 @@ def generate_mask_schema(
 
     df = pd.DataFrame(df_dict, columns=df_dict.keys())
 
-    output_path = Path(output_path)
-    if not output_path.exists():
-        output_path.mkdir(parents=True)
+    save_path = save_path_file(save_path, suffix=".csv")
 
-    save_path = Path(output_path) / Path(output_name)
     df.to_csv(save_path, index=False)
 
     print("Done!")
