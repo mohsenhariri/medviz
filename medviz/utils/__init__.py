@@ -1,4 +1,4 @@
-from .custom_type import PathType
+from .custom_type import PathType, PathTypeLst, PathTypeIter, StrLst, NumLst
 from .utility import now
 from .array_profile import profile
 from .array_threshold import compute_thresholds
