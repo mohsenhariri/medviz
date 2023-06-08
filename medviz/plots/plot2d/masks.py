@@ -24,6 +24,10 @@ def masks_path(
     origin: str or None = "upper",
     save_path: PathType or None = None,
 ):
+    
+    if len(paths) == 0:
+        raise ValueError("paths must be a list of paths")
+
     paths = [path_in(path) for path in paths]
     masks_data = [mask_path_to_data_ax(path) for path in paths]  # just for nifti files
 
@@ -48,6 +52,9 @@ def masks_array(
     save_path=None,
 ):
     print("Loading images...")
+
+    if len(masks_data) == 0:
+        raise ValueError("masks_data must be a list of arrays")
 
     for mask_data in masks_data:
         if mask_data.ndim != 2:

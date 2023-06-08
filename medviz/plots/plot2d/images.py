@@ -24,7 +24,11 @@ def images_path(
     origin: str or None = "upper",
     save_path: PathType or None = None,
 ):
+    if len(paths) == 0:
+        raise ValueError("paths must be a list of paths")
+
     paths = [path_in(path) for path in paths]
+
     images_data = [image_path_to_data_ax(path) for path in paths]
 
     images_array(
@@ -48,6 +52,9 @@ def images_array(
     save_path=None,
 ):
     print("Loading images...")
+
+    if len(images_data) == 0:
+        raise ValueError("images_data must be a list of arrays")
 
     for image_data in images_data:
         if image_data.ndim != 2:
