@@ -24,7 +24,6 @@ def masks_path(
     origin: str or None = "upper",
     save_path: PathType or None = None,
 ):
-    
     if len(paths) == 0:
         raise ValueError("paths must be a list of paths")
 
