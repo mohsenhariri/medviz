@@ -1,10 +1,7 @@
-from pathlib import Path
 import medviz as viz
-import nibabel as nib
 
+ct_data = viz.image_path_to_data_ax("dataset/1-1.nii")
 
-ct_image = nib.load("dataset/1-1.nii")
-ct_data = ct_image.get_fdata()
 
 viz.plot2d_images_array(images_data=[ct_data[:, :, 40]])
 viz.plot2d_images_array(images_data=[ct_data[:, :, 40], ct_data[:, :, 60], ct_data[:, :, 80]])

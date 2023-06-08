@@ -61,8 +61,17 @@ def images_array(
             raise ValueError("Images must be 2D")
 
     num_images = len(images_data)  # Number of images
-    rows = math.ceil(math.sqrt(num_images))  # Number of rows in the grid
-    columns = math.ceil(num_images / rows)  # Number of columns in the grid
+
+    if rows is None and columns is None:
+        rows = math.ceil(math.sqrt(num_images))  # Number of rows in the grid
+        columns = math.ceil(num_images / rows)  # Number of columns in the grid
+    elif rows is None:
+        rows = math.ceil(num_images / columns)
+    elif columns is None:
+        columns = math.ceil(num_images / rows)
+
+    if num_images > rows * columns:
+        raise ValueError("rows * columns must be greater than or equal to num_images")
 
     _, axs = plt.subplots(rows, columns)
     if num_images == 1:

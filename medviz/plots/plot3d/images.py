@@ -4,11 +4,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider
 
-from ...utils import image_path_to_data_ax
-from .. import plot_image_imshow
+from ...plots import plot_image
+from ...utils import NumLst, PathTypeLst, StrLst, image_path_to_data_ax, path_in
 
 
-def images_path(paths, rows=None, columns=None, titles=[], cmap="gray"):
+def images_path(
+    paths: PathTypeLst,
+    rows: int or None = None,
+    columns: int or None = None,
+    titles: StrLst = [],
+    cmap: str or None = "gray",
+):
+    if len(paths) == 0:
+        raise ValueError("paths must be a list of paths")
+
+    paths = [path_in(path) for path in paths]
+
     images_data = [image_path_to_data_ax(path) for path in paths]
 
     images_array(
@@ -20,15 +31,38 @@ def images_path(paths, rows=None, columns=None, titles=[], cmap="gray"):
     )
 
 
-def images_array(images_data, rows=None, columns=None, titles=[], cmap="gray"):
+def images_array(
+    images_data: NumLst,
+    rows=None,
+    columns=None,
+    titles=[],
+    cmap="gray",
+):
     print("Loading images...")
 
-    d = images_data[0].shape[2]
-    init_slice, last_slice = d // 2, d - 1
+    if len(images_data) == 0:
+        raise ValueError("images_data must be a list of arrays")
+
+    for image_data in images_data:
+        if image_data.ndim != 3:
+            raise ValueError("images_data must be a list of 3D arrays")
 
     num_images = len(images_data)  # Number of images
-    rows = math.ceil(math.sqrt(num_images))  # Number of rows in the grid
-    columns = math.ceil(num_images / rows)  # Number of columns in the grid
+
+    if rows is None and columns is None:
+        rows = math.ceil(math.sqrt(num_images))  # Number of rows in the grid
+        columns = math.ceil(num_images / rows)  # Number of columns in the grid
+    elif rows is None:
+        rows = math.ceil(num_images / columns)
+    elif columns is None:
+        columns = math.ceil(num_images / rows)
+
+    if num_images > rows * columns:
+        raise ValueError("rows * columns must be greater than or equal to num_images")
+
+    depth = [image_data.shape[2] for image_data in images_data]
+
+    init_slice, last_slice = int(np.mean(depth) // 2), np.max(depth) - 2
 
     _, axs = plt.subplots(rows, columns)
     if num_images == 1:
@@ -39,10 +73,8 @@ def images_array(images_data, rows=None, columns=None, titles=[], cmap="gray"):
     for i, ax in enumerate(axs.flat):
         if i < num_images:
             title = titles[i] if titles else f"Image {i}"
-            plot_image_imshow(
-                ax, images_data[i][:, :, init_slice], cmap=cmap, title=title
-            )
-            ax.axis("off")
+            plot_image(ax, images_data[i][:, :, init_slice], cmap=cmap, title=title)
+            # ax.axis("off")
             ax.set_xlabel(f"Slice Number: {init_slice}")
 
         else:
@@ -68,28 +100,17 @@ def images_array(images_data, rows=None, columns=None, titles=[], cmap="gray"):
             if i < num_images:
                 title = titles[i] if titles else f"Image {i}"
 
-                plot_image_imshow(
-                    ax, images_data[i][:, :, slice_num], cmap=cmap, title=title
-                )
+                if images_data[i].shape[2] <= slice_num:
+                    slice_num = images_data[i].shape[2] - 1
+                plot_image(ax, images_data[i][:, :, slice_num], cmap=cmap, title=title)
                 ax.set_xlabel(f"Slice Number: {slice_num}")
-                ax.axis("off")
+                # ax.axis("off")
             else:
                 ax.axis("off")
-
+                pass
         # ax.set_title(title)
 
     slider.on_changed(update)
 
     plt.tight_layout()
     plt.show()
-
-
-# import nibabel as nib
-
-# if __name__ == "__main__":
-#     ct_image = nib.load("dataset/1-1.nii")
-#     ct_data = ct_image.get_fdata()
-#     print(ct_data.shape)
-#     ct_data = image_path_to_data("dataset/1-1.nii")
-#     # ct_data = ct_data[:, :, 100]
-#     plot_multi_data([ct_data, ct_data], title="Image")

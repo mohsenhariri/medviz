@@ -60,8 +60,17 @@ def masks_array(
             raise ValueError("Masks must be 2D")
 
     num_masks = len(masks_data)  # Number of images
-    rows = math.ceil(math.sqrt(num_masks))  # Number of rows in the grid
-    columns = math.ceil(num_masks / rows)  # Number of columns in the grid
+
+    if rows is None and columns is None:
+        rows = math.ceil(math.sqrt(num_masks))  # Number of rows in the grid
+        columns = math.ceil(num_masks / rows)  # Number of columns in the grid
+    elif rows is None:
+        rows = math.ceil(num_masks / columns)
+    elif columns is None:
+        columns = math.ceil(num_masks / rows)
+
+    if num_masks > rows * columns:
+        raise ValueError("rows * columns must be greater than or equal to num_images")
 
     mask_colors = generate_mask_colors(num_masks, mask_colors)
 
