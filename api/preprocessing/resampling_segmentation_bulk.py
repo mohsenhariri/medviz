@@ -4,10 +4,10 @@ from tqdm import tqdm
 
 import medviz as viz
 
-base_path = Path("/home/mohsen/dataset/nii_version/Grp1_TI_nii_raw")
+base_path = Path("dataset/nii_version/Grp1_TI_nii_raw")
 mask_paths = base_path.glob("*.nii")
 
-output_path = Path("/home/mohsen/dataset/nii_version/Grp1_TI_nii_resampled")
+output_path = Path("/nii_version/Grp1_TI_nii_resampled")
 
 mask_paths = list(mask_paths)
 num_inputs = len(mask_paths)
