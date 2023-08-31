@@ -97,6 +97,9 @@ multimodal-__init__:
 multimodal-save_dicom_metadata:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/multimodal/save_dicom_metadata.py
 
+feats-collage-collage3d:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/feats/collage/collage3d.py
+
 feats-collage-stats:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/feats/collage/stats.py
 

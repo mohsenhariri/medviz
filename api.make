@@ -38,5 +38,8 @@ plot-plot2d_images:
 plot-plot2Dfrom3DMostVlueMask:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/plot/plot2Dfrom3DMostVlueMask.py
 
+features-collage3d:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/features/collage3d.py
+
 features-collage2d:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/features/collage2d.py
