@@ -26,41 +26,41 @@ from .utils.array_profile import profile
 from .utils.array_threshold import compute_thresholds
 
 ### PLOT 2D ###
-from .plots.plot2d.images import (
-    images_array as plot2d_images_array,
-    images_path as plot2d_images_path,
-)
+# from .plots.plot2d.images import (
+#     images_array as plot2d_images_array,
+#     images_path as plot2d_images_path,
+# )
 
-from .plots.plot2d.masks import (
-    masks_array as plot2d_masks_array,
-    masks_path as plot2d_masks_path,
-)
+# from .plots.plot2d.masks import (
+#     masks_array as plot2d_masks_array,
+#     masks_path as plot2d_masks_path,
+# )
 
-from .plots.plot2d.image_masks import (
-    image_masks_path as plot2d_image_masks_path,
-    image_masks_array as plot2d_image_masks_array,
-)
+# from .plots.plot2d.image_masks import (
+#     image_masks_path as plot2d_image_masks_path,
+#     image_masks_array as plot2d_image_masks_array,
+# )
 
 
-from .plots.plot2d.image_mask_annotated import (
-    image_mask_annotated_array as plot2d_image_mask_annotated_array,
-    image_mask_annotated_path as plot2d_image_mask_annotated_path,
-)
+# from .plots.plot2d.image_mask_annotated import (
+#     image_mask_annotated_array as plot2d_image_mask_annotated_array,
+#     image_mask_annotated_path as plot2d_image_mask_annotated_path,
+# )
 
 ### PLOT 3D ###
 
 
-from .plots.plot3d import layered_slider_array, layered_slider_path
+# from .plots.plot3d import layered_slider_array, layered_slider_path
 
-from .plots.plot3d.images import (
-    images_array as plot3d_images_array,
-    images_path as plot3d_images_path,
-)
+# from .plots.plot3d.images import (
+#     images_array as plot3d_images_array,
+#     images_path as plot3d_images_path,
+# )
 
-from .plots.plot3d.masks import (
-    masks_array as plot3d_masks_array,
-    masks_path as plot3d_masks_path,
-)
+# from .plots.plot3d.masks import (
+#     masks_array as plot3d_masks_array,
+#     masks_path as plot3d_masks_path,
+# )
 
 # from .plots.plot3d.image_masks import (
 #     image_masks_path as plot3d_image_masks_path,
@@ -79,7 +79,7 @@ from .multimodal import save_dicom_metadata, filter_dicom
 
 from .preprocess import *
 
-from .features.collage import compute_stats_collage
+from .feats.collage import compute_stats_collage
 
 # from .nifti.helper import nii3d_to_annotated2d, nii_mask3d_to_2d
 

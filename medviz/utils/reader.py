@@ -61,6 +61,8 @@ def im2arr(path: PathType) -> np.ndarray:
             str(path)
         )  # SimpleITK python wrapper has no support for pathlib.Path
         return sitk.GetArrayFromImage(sitk_image)
+    elif path.suffix == ".npy":
+        return np.load(path)
     else:
         raise TypeError(f"Unsupported file type: {path.suffix}")
 
