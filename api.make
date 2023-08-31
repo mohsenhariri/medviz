@@ -2,53 +2,41 @@
 # Don't edit this file manually.
 # Run the module's apis.
 
-crohn3_match_image_mask:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/crohn3_match_image_mask.py
-
-crohn5_collage:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/crohn5_collage.py
-
-cp1:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/cp1.py
-
-plot_examples:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/plot_examples.py
-
-crohn2_convert_image_npy:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/crohn2_convert_image_npy.py
-
-utility_example:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/utility_example.py
-
-overlap:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/overlap.py
-
-preprocessing-mask_schema:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/preprocessing/mask_schema.py
+preprocessing-match_masks_image:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/preprocessing/match_masks_image.py
 
 preprocessing-mask_profile:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/preprocessing/mask_profile.py
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/preprocessing/mask_profile.py
 
-plot_image_examples:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/plot_image_examples.py
+preprocessing-mask_schema:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/preprocessing/mask_schema.py
 
-utils-arr:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/utils/arr.py
+preprocessing-resampling_segmentation_bulk:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/preprocessing/resampling_segmentation_bulk.py
 
-layered_plot_examples:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/layered_plot_examples.py
+preprocessing-resampling:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/preprocessing/resampling.py
 
-crohn4_vis:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/crohn4_vis.py
+preprocessing-resampling_segmentation_bulk_multiprocessing:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/preprocessing/resampling_segmentation_bulk_multiprocessing.py
 
-crohn1_convert_mask_binary_npy:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/crohn1_convert_mask_binary_npy.py
+plot-plot2d_masks:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/plot/plot2d_masks.py
 
-layered_plot2D_examples:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/layered_plot2D_examples.py
+plot-plot2d_layered_image_mask:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/plot/plot2d_layered_image_mask.py
 
-plot_image_masks:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/plot_image_masks.py
+plot-plot3d_images:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/plot/plot3d_images.py
 
-gif_example:
-		/home/mohsen/envs/github/medviz/env_mohsen-invent_linux_3.9/bin/python api/gif_example.py
+plot-plot3d_masks:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/plot/plot3d_masks.py
+
+plot-plot2d_images:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/plot/plot2d_images.py
+
+plot-plot2Dfrom3DMostVlueMask:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/plot/plot2Dfrom3DMostVlueMask.py
+
+features-collage2d:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/features/collage2d.py

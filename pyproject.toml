@@ -34,7 +34,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["medviz","medviz.multimodal"]
+packages = ["medviz", "medviz.utils" , "medviz.multimodal", "medviz.feats", "medviz.preprocess"]
 
 
 [tool.setuptools.dynamic]

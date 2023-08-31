@@ -6,3 +6,5 @@ recursive-exclude scripts *
 recursive-exclude * tests
 
 include VERSION
+
+recursive-include medviz *.py
