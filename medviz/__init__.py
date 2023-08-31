@@ -19,6 +19,7 @@ from .utils import (
     save_path_file,
     path_in,
     im2arr,
+    read_image_mask,
 )
 
 from .utils.array_profile import profile

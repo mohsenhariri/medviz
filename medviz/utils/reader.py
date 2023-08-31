@@ -41,7 +41,7 @@ def reader(
         raise TypeError(f"Unsupported file type: {path.suffix}")
 
 
-def im2arr(path: str or Path) -> np.ndarray:
+def im2arr(path: PathType) -> np.ndarray:
     """
     Convert the medical image to a numpy array based on its file extension.
 
@@ -63,3 +63,59 @@ def im2arr(path: str or Path) -> np.ndarray:
         return sitk.GetArrayFromImage(sitk_image)
     else:
         raise TypeError(f"Unsupported file type: {path.suffix}")
+
+
+def image_preprocess(input):
+    if isinstance(input, PathType):
+        data = im2arr(input)
+    elif isinstance(input, np.ndarray):
+        data = input
+    else:
+        raise ValueError(
+            "Unsupported input type. Expected path (str or Path) or numpy ndarray."
+        )
+
+    data = data.astype(np.float64)
+    min_value = np.min(data)
+    max_value = np.max(data)
+    data = (data - min_value) / (max_value - min_value)
+
+    return data
+
+
+def mask_preprocess(input):
+    if isinstance(input, PathType):
+        data = im2arr(input)
+    elif isinstance(input, np.ndarray):
+        data = input
+    else:
+        raise ValueError(
+            "Unsupported input type. Expected path (str or Path) or numpy ndarray."
+        )
+
+    data = data.astype(np.int8)
+
+    return data
+
+
+def read_image_mask(image, mask) -> np.ndarray:
+    """
+    Read the medical image and mask based on their file extension.
+
+    Parameters:
+        image (Union[str, Path] or np.ndarray): Path to the image or image data.
+        mask (Union[str, Path] or np.ndarray): Path to the mask or mask data.
+
+    Returns:
+        Loaded image and mask as numpy arrays.
+    """
+
+    image = image_preprocess(image)
+    mask = mask_preprocess(mask)
+
+    assert image.shape == mask.shape, "Image and mask shape mismatch"
+
+    print("Image shape", image.shape)
+    print("Mask shape", mask.shape)
+
+    return image, mask
