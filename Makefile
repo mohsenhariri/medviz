@@ -8,29 +8,32 @@ VERSION := $(shell cat VERSION)
 PROJECT := $(shell basename $(CURDIR))
 
 PYTHON := /usr/bin/python3
-# PYTHON := /media/storage/compilers/py3_10_7/bin/python3.10
 
 DOCKER := /usr/bin/docker 
 
-PATH := $(VIRTUAL_ENV)/bin:$(PATH)
-PY :=  $(VIRTUAL_ENV)/bin/python
-
+# ENV_PATH := /storage/envs/$(PROJECT)
 ENV_PATH := $(HOME)/envs/github/$(PROJECT)
 ENV_NAME := $(shell $(PYTHON) -c 'import sys;import socket;print(f"env_{socket.gethostname()}_{sys.platform}_{sys.version_info.major}.{sys.version_info.minor}")')
+
+ifeq ($(strip $(VIRTUAL_ENV)),)
+	PATH := $(ENV_PATH)/$(ENV_NAME)/bin:$(PATH)
+    PY := $(ENV_PATH)/$(ENV_NAME)/bin/python
+else
+	PATH := $(VIRTUAL_ENV)/bin:$(PATH)
+	PY := $(VIRTUAL_ENV)/bin/python
+endif
 
 SRC := $(PROJECT)# for a python package
 DIST := dist
 BUILD := build
 API := api
 BACKUP_DIR := $(HOME)/backup/$(PROJECT)
-SYNC_DIR := $(HOME)/sync
+SYNC_DIR := $(HOME)/sync/git
 
 # PY_FILES = $(shell find $(SRC) -type f -name '*.py')
 PY_FILES := $(shell find $(SRC) -type f -name '*.py' | grep -v '^.*\/test_.*\.py$$')
 PY_FILES_TEST := $(shell find $(SRC) -type f -name 'test_*.py')
-# PY_FILES_TEST := $(subst /,-,$(subst $(SRC)/,,$(PY_FILES_TEST)))
 PY_FILES_API := $(shell find $(API) -type f -name '*.py')
-
 
 IGNORE_LIST := .gitignore .dockerignore exclude.lst
 
@@ -59,11 +62,10 @@ cert: # HTTPS server
 		openssl req -x509 -nodes -newkey rsa:4096 -out ./certs/cert.pem -keyout ./certs/key.pem -sha256 -days 365 ;fi
 
 clean:
-	rm -rf ./$(DIST)/* ./$(BUILD)/*
+		rm -rf ./$(DIST)/* ./$(BUILD)/*
 
 clcache: 
 		rm -r ./__pycache__
-
 
 env-local: $(IGNORE_LIST)
 		if [ ! -d $(ENV_NAME) ] ; then \
@@ -156,6 +158,9 @@ pkg-poetry-publish-test:
 pkg-poetry-publish:
 		poetry publish
 
+lint:
+		ruff check $(SRC)
+
 pylint-dev:
 		pylint --rcfile .pylintrc.dev $(SRC)
 
@@ -165,8 +170,14 @@ pylint-prod:
 format:
 		black $(SRC)
 
+format-api:
+		black $(API)
+
 sort:
 		isort $(SRC)
+
+sort-api:
+		isort $(API)
 		
 type:
 		mypy
@@ -174,7 +185,7 @@ type:
 type-prod:
 		mypy --config-file .mypy.ini.prod
 
-script-upgrade:
+script-upgrade: 
 		./scripts/upgrade_dependencies.sh
 
 clean-commands: py.make api.make
@@ -184,6 +195,10 @@ clean-commands: py.make api.make
 gen-commands: clean-commands
 		$(foreach file,$(PY_FILES),$(shell echo "\n$(subst /,-,$(subst $(SRC)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> py.make))
 		$(foreach file,$(PY_FILES_API),$(shell echo "\n$(subst /,-,$(subst $(API)/,,$(basename $(file)))):\n\t\t$(PY) $(file)" >> api.make))
+
+py:
+		$(PY)  $(filter-out $@,$(MAKECMDGOALS))
+		# $(PY) $(SRC)/$(subst -,/,$(filter-out $@,$(MAKECMDGOALS))).py
 
 backup:
 		if [ ! -d "$(BACKUP_DIR)" ]; then mkdir -p $(BACKUP_DIR); fi
