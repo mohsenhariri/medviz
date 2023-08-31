@@ -61,10 +61,10 @@ from .plots.plot3d.masks import (
     masks_path as plot3d_masks_path,
 )
 
-from .plots.plot3d.image_masks import (
-    image_masks_path as plot3d_image_masks_path,
-    image_masks_array as plot3d_image_masks_array,
-)
+# from .plots.plot3d.image_masks import (
+#     image_masks_path as plot3d_image_masks_path,
+#     image_masks_array as plot3d_image_masks_array,
+# )
 
 # from .plots.plot3d.layered_plot import (
 #     layered_plot_data3D as plot3d_layered_data,
@@ -78,9 +78,9 @@ from .multimodal import save_dicom_metadata, filter_dicom
 
 from .preprocess import *
 
-from .collage import compute_stats_collage
+from .features.collage import compute_stats_collage
 
-from .nifti.helper import nii3d_to_annotated2d, nii_mask3d_to_2d
+# from .nifti.helper import nii3d_to_annotated2d, nii_mask3d_to_2d
 
 # def version():
 #     with open("VERSION", "r") as f:

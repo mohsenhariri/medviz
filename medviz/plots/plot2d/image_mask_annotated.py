@@ -52,7 +52,9 @@ def image_mask_annotated_array(
 ):
     print("Loading images...")
 
-    most_value_nonzero_slices, num_nonzero_slices = significant_slice_idx_data(mask_data)
+    most_value_nonzero_slices, num_nonzero_slices = significant_slice_idx_data(
+        mask_data
+    )
     num_masks = min(num_nonzero_slices, limit)
 
     rows = math.ceil(math.sqrt(num_masks))  # Number of rows in the grid
@@ -70,7 +72,10 @@ def image_mask_annotated_array(
             # title = titles[i] if titles else f"Image {i}"
             plot_image(ax, image_data[:, :, most_value_nonzero_slices[i]], cmap=cmap)
             plot_contour(
-                ax, mask_data[:, :, most_value_nonzero_slices[i]], color=mask_colors[i], levels=[0.5]
+                ax,
+                mask_data[:, :, most_value_nonzero_slices[i]],
+                color=mask_colors[i],
+                levels=[0.5],
             )
             ax.set_title(f"Slice {most_value_nonzero_slices[i]}")
             # ax.axis("off")

@@ -4,7 +4,9 @@ from scipy.stats import kurtosis, skew
 from .main import Collage
 
 
-def compute_collage(image, mask, haralick_windows=[3, 5, 7, 9, 11], raw_save_path=None, name=None):
+def compute_collage(
+    image, mask, haralick_windows=[3, 5, 7, 9, 11], raw_save_path=None, name=None
+):
     """This method computes Collage features
 
     Args:
@@ -32,7 +34,9 @@ def compute_collage(image, mask, haralick_windows=[3, 5, 7, 9, 11], raw_save_pat
 
             collage_feats = collage.execute()
             if raw_save_path:
-                raw_file_path = raw_save_path / f"{name}_COLLAGE_RAW_W{haralick_window_size}.npy"
+                raw_file_path = (
+                    raw_save_path / f"{name}_COLLAGE_RAW_W{haralick_window_size}.npy"
+                )
 
                 np.save(
                     raw_file_path,

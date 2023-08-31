@@ -54,7 +54,9 @@ def _svd_dominant_angles(dx, dy, dz, svd_radius):
     center_y_range = range(angles_shape[0])
     center_z_range = range(angles_shape[2])
     for x, y, z in product(center_x_range, center_y_range, center_z_range):
-        dominant_angles_array[y, x, z, :] = _svd_dominant_angle(x, y, z, dx_windows, dy_windows, dz_windows)
+        dominant_angles_array[y, x, z, :] = _svd_dominant_angle(
+            x, y, z, dx_windows, dy_windows, dz_windows
+        )
 
     return dominant_angles_array
 
@@ -89,11 +91,15 @@ def _svd_dominant_angle(x, y, z, dx_windows, dy_windows, dz_windows):
     # flatten all N gradient values in this patch into an Nxd matrix to pass into svd
     window_area = dx_patch.size
     flattened_gradients = np.zeros((window_area, (3 if is_3D else 2)))
-    matrix_order = "F"  # fortran-style to be consistent with original matlab implementation
+    matrix_order = (
+        "F"  # fortran-style to be consistent with original matlab implementation
+    )
     flattened_gradients[:, 0] = np.reshape(dx_patch, window_area, order=matrix_order)
     flattened_gradients[:, 1] = np.reshape(dy_patch, window_area, order=matrix_order)
     if is_3D:
-        flattened_gradients[:, 2] = np.reshape(dz_patch, window_area, order=matrix_order)
+        flattened_gradients[:, 2] = np.reshape(
+            dz_patch, window_area, order=matrix_order
+        )
 
     # calculate svd
     _, _, v = linalg.svd(flattened_gradients)
@@ -108,7 +114,9 @@ def _svd_dominant_angle(x, y, z, dx_windows, dy_windows, dz_windows):
     if is_3D:
         # also include the secondary angle
         dominant_z = v[2, 0]
-        secondary_angle = math.atan2(dominant_z, math.sqrt(dominant_x**2 + dominant_y**2))
+        secondary_angle = math.atan2(
+            dominant_z, math.sqrt(dominant_x**2 + dominant_y**2)
+        )
         return (dominant_angle, secondary_angle)
     else:
         return dominant_angle
@@ -374,7 +382,9 @@ class Collage:
             or self._img_array.shape[1] < self._haralick_window_size
             or (self._is_3D and self._img_array.shape[2] < min_3D_slices)
         ):
-            raise Exception(f"Image is too small for a window size of {self._haralick_window_size} pixels.")
+            raise Exception(
+                f"Image is too small for a window size of {self._haralick_window_size} pixels."
+            )
 
         # threshold mask
         uniqueValues = np.unique(mask_array)
@@ -445,13 +455,18 @@ class Collage:
 
         # co-occurence matrix of all 8 directions and sum them
         cooccurence_matrix = graycomatrix(
-            cropped_img_array, [1], self.cooccurence_angles, levels=self.num_unique_angles
+            cropped_img_array,
+            [1],
+            self.cooccurence_angles,
+            levels=self.num_unique_angles,
         )
         cooccurence_matrix = np.sum(cooccurence_matrix, axis=3)
         cooccurence_matrix = cooccurence_matrix[:, :, 0]
 
         # extract haralick using mahotas library
-        return mt.features.texture.haralick_features([cooccurence_matrix], return_mean=True)
+        return mt.features.texture.haralick_features(
+            [cooccurence_matrix], return_mean=True
+        )
 
     def _calculate_haralick_textures(self, dominant_angles):
         """Gets haralick texture values
@@ -489,13 +504,17 @@ class Collage:
         # the haralick is calculated for each slice separately
         height, width, depth = shape
 
-        logger.debug(f"dominant_angles_binned shape is {shape} mask shape is {self.mask_array.shape}")
+        logger.debug(
+            f"dominant_angles_binned shape is {shape} mask shape is {self.mask_array.shape}"
+        )
 
         # In 3D, we extended the dominant angles by one slice in each direction, so now we need to trim those off.
         for z in range(1, depth - 1) if self.is_3D else range(depth):
             for y, x in product(range(height), range(width)):
                 if self.mask_array[y, x, z]:
-                    haralick_image[y, x, z, :] = self._calculate_haralick_feature_values(
+                    haralick_image[
+                        y, x, z, :
+                    ] = self._calculate_haralick_feature_values(
                         dominant_angles_binned[:, :, z], x, y
                     )
 
@@ -527,7 +546,9 @@ class Collage:
         # extend the mask outwards a bit (up to the edge of the image) to handle the svd radius
         cropped_min_x = max(mask_min_x - svd_radius, 0)
         cropped_min_y = max(mask_min_y - svd_radius, 0)
-        cropped_min_z = max(mask_min_z - 1, 0)  # for 3D, we just extend 1 slice in both directions
+        cropped_min_z = max(
+            mask_min_z - 1, 0
+        )  # for 3D, we just extend 1 slice in both directions
         cropped_max_x = min(mask_max_x + svd_radius, img_array.shape[1])
         cropped_max_y = min(mask_max_y + svd_radius, img_array.shape[0])
         cropped_max_z = min(mask_max_z + 1, img_array.shape[2])
@@ -536,7 +557,9 @@ class Collage:
         extended_above = mask_max_z < img_array.shape[2]
 
         cropped_image = img_array[
-            cropped_min_y:cropped_max_y, cropped_min_x:cropped_max_x, cropped_min_z:cropped_max_z
+            cropped_min_y:cropped_max_y,
+            cropped_min_x:cropped_max_x,
+            cropped_min_z:cropped_max_z,
         ]
 
         logger.debug(f"Image shape = {img_array.shape}")
@@ -545,7 +568,9 @@ class Collage:
 
         # ensure the image values range from 0-1
         if cropped_image.max() > 1:
-            logger.debug(f"Note: Dividing image values by {cropped_image.max()} to convert to 0-1 range")
+            logger.debug(
+                f"Note: Dividing image values by {cropped_image.max()} to convert to 0-1 range"
+            )
             cropped_image = cropped_image / cropped_image.max()
 
         # calculate x,y,z gradients
@@ -590,9 +615,9 @@ class Collage:
         )
         for angle_index in range(angles_shape[3]):
             logger.info(f"Calculating features for angle {angle_index}:")
-            haralick_features[:, :, :, :, angle_index] = self._calculate_haralick_textures(
-                dominant_angles[:, :, :, angle_index]
-            )
+            haralick_features[
+                :, :, :, :, angle_index
+            ] = self._calculate_haralick_textures(dominant_angles[:, :, :, angle_index])
             logger.info(f"Calculating features for angle {angle_index} done.")
         logger.debug("Calculating haralick features of angles done.")
 

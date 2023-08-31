@@ -11,7 +11,10 @@ from .compute_collage import compute_collage
 
 
 def compute_stats_collage(
-    csv_path: Path or str, stats_save_path: Path or str, base_path=None, raw_save_path: Path or str = None
+    csv_path: Path or str,
+    stats_save_path: Path or str,
+    base_path=None,
+    raw_save_path: Path or str = None,
 ):
     stats_save_path = save_path_dir(stats_save_path)
     raw_save_path = save_path_dir(raw_save_path) if raw_save_path else None
