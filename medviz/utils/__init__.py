@@ -18,4 +18,4 @@ from .helper_mask import (
 )
 from .helper_path import path_in, save_path_file, save_path_dir
 
-from .reader import reader, convert_arr
+from .reader import reader, im2arr

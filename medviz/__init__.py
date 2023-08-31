@@ -18,6 +18,7 @@ from .utils import (
     save_path_dir,
     save_path_file,
     path_in,
+    im2arr,
 )
 
 from .utils.array_profile import profile
