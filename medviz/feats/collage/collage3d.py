@@ -99,7 +99,7 @@ def collage3d(
     padding: Union[bool, int] = False,
 ) -> None:
     """
-    Process a 3D image and its associated mask using a collage method with 
+    Process a 3D image and its associated mask using a collage method with
     specified window sizes, and save the resulting features.
 
     Parameters:

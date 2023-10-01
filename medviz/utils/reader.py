@@ -8,6 +8,7 @@ Extensions:
     
 """
 from pathlib import Path
+from typing import Tuple, Union
 
 import nibabel as nib
 import numpy as np
@@ -16,7 +17,6 @@ import SimpleITK as sitk
 
 from .custom_type import PathType
 from .helper_path import path_in
-from typing import Tuple, Union
 
 
 def reader(
