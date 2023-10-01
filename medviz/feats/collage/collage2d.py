@@ -29,7 +29,7 @@ descriptors = [
 ]
 
 
-def compute_collage(
+def compute_collage2d(
     image: np.ndarray, mask: np.ndarray, haralick_windows: List[int]
 ) -> np.ndarray:
     feats = {}
@@ -91,7 +91,7 @@ def collage2d(
 
     """
     for ws in window_sizes:
-        feats = compute_collage(
+        feats = compute_collage2d(
             image,
             mask,
             haralick_windows=ws,
