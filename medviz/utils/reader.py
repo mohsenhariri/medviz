@@ -16,6 +16,7 @@ import SimpleITK as sitk
 
 from .custom_type import PathType
 from .helper_path import path_in
+from typing import Tuple, Union
 
 
 def reader(
@@ -67,7 +68,7 @@ def im2arr(path: PathType) -> np.ndarray:
         raise TypeError(f"Unsupported file type: {path.suffix}")
 
 
-def image_preprocess(input):
+def image_preprocess(input, norm: bool):
     if isinstance(input, PathType):
         data = im2arr(input)
     elif isinstance(input, np.ndarray):
@@ -78,9 +79,11 @@ def image_preprocess(input):
         )
 
     data = data.astype(np.float64)
-    min_value = np.min(data)
-    max_value = np.max(data)
-    data = (data - min_value) / (max_value - min_value)
+
+    if norm:
+        min_value = np.min(data)
+        max_value = np.max(data)
+        data = (data - min_value) / (max_value - min_value)
 
     return data
 
@@ -100,24 +103,28 @@ def mask_preprocess(input):
     return data
 
 
-def read_image_mask(image, mask) -> np.ndarray:
+def read_image_mask(
+    image: Union[str, Path, np.ndarray],
+    mask: Union[str, Path, np.ndarray],
+    norm: bool = False,
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Read the medical image and mask based on their file extension.
 
     Parameters:
-        image (Union[str, Path] or np.ndarray): Path to the image or image data.
-        mask (Union[str, Path] or np.ndarray): Path to the mask or mask data.
+        image (Union[str, Path, np.ndarray]): Path to the image or image data.
+        mask (Union[str, Path, np.ndarray]): Path to the mask or mask data.
 
     Returns:
-        Loaded image and mask as numpy arrays.
+        Tuple[numpy.ndarray, numpy.ndarray]: Loaded image and mask as numpy arrays.
     """
 
-    image = image_preprocess(image)
-    mask = mask_preprocess(mask)
+    image = image_preprocess(image, norm)
+    mask = mask_preprocess(mask, norm)
 
-    assert image.shape == mask.shape, "Image and mask shape mismatch"
+    if image.shape != mask.shape:
+        raise ValueError("Image and mask shape mismatch")
 
-    print("Image shape", image.shape)
-    print("Mask shape", mask.shape)
+    print("Shape:", image.shape)
 
     return image, mask

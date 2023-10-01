@@ -1,5 +1,8 @@
 # MedViz
 
+Optional normalization
+
+
 ## Usage
 
 Install the [package](https://pypi.org/project/medviz/) using `pip`:

@@ -31,6 +31,7 @@ dependencies = [
   "tabulate >= 0.8.9",
   "pydicom >= 2.1.2",
   "SimpleITK >= 2.1.1",
+  "mahotas >= 1.4.11",
 ]
 
 [tool.setuptools]

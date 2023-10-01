@@ -48,7 +48,7 @@ def compute_collage(image, mask, haralick_windows):
         for collage_idx, descriptor in enumerate(descriptors):
             print(f"Processing collage {descriptor}")
             for orientation in range(2):
-                feat = collage_feats[:, :,:, collage_idx, orientation].flatten()
+                feat = collage_feats[:, :, :, collage_idx, orientation].flatten()
                 feat = feat[~np.isnan(feat)]
 
                 feats[f"col_des_{descriptor}_ori_{orientation}"] = [

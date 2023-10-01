@@ -1,6 +1,7 @@
 import logging
 import pickle
 from pathlib import Path
+from typing import List
 
 import numpy as np
 from scipy.stats import kurtosis, skew
@@ -28,7 +29,9 @@ descriptors = [
 ]
 
 
-def compute_collage(image, mask, haralick_windows):
+def compute_collage(
+    image: np.ndarray, mask: np.ndarray, haralick_windows: List[int]
+) -> np.ndarray:
     feats = {}
 
     try:
@@ -66,7 +69,27 @@ def compute_collage(image, mask, haralick_windows):
     return feats
 
 
-def collage2d(image, mask, window_sizes, save_path, out_name):
+def collage2d(
+    image: np.ndarray,
+    mask: np.ndarray,
+    window_sizes: List[int],
+    save_path,
+    out_name: str,
+):
+    """_summary_collage2d
+    Compute collage features for a given image and mask.
+    :param image: image to compute collage features for
+    :type image: np.ndarray
+    :param mask: mask to compute collage features for
+    :type mask: np.ndarray
+    :param window_sizes: window sizes to compute collage features for
+    :type window_sizes: List[int]
+    :param save_path: path to save collage features
+    :type save_path: str
+    :param out_name: name of output collage features
+    :type out_name: str
+
+    """
     for ws in window_sizes:
         feats = compute_collage(
             image,
