@@ -69,7 +69,7 @@ def im2arr(path: PathType) -> np.ndarray:
 
 
 def image_preprocess(input, norm: bool):
-    if isinstance(input, PathType):
+    if isinstance(input, (str, Path)):
         data = im2arr(input)
     elif isinstance(input, np.ndarray):
         data = input
@@ -89,7 +89,7 @@ def image_preprocess(input, norm: bool):
 
 
 def mask_preprocess(input):
-    if isinstance(input, PathType):
+    if isinstance(input, (str, Path)):
         data = im2arr(input)
     elif isinstance(input, np.ndarray):
         data = input
@@ -120,7 +120,7 @@ def read_image_mask(
     """
 
     image = image_preprocess(image, norm)
-    mask = mask_preprocess(mask, norm)
+    mask = mask_preprocess(mask)
 
     if image.shape != mask.shape:
         raise ValueError("Image and mask shape mismatch")
