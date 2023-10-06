@@ -49,9 +49,12 @@ def resample(input_path, output_path, new_voxel_size, method):
                         and 0 <= orig_k < data.shape[2]
                     ):
                         resampled_data[i, j, k] = data[orig_i, orig_j, orig_k]
-
+    
+    # Adjust affine to reflect changed voxel spacing
+    new_affine = nib.affines.rescale_affine(affine,resampled_data.shape,new_voxel_size)
+    
     # Create a new NIfTI image with resampled data and the same affine
-    resampled_img = nib.Nifti1Image(resampled_data, affine)
+    resampled_img = nib.Nifti1Image(resampled_data, new_affine)
 
     # Save the resampled image to the output path
     save_path = save_path_file(output_path, suffix=".nii")
