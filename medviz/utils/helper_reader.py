@@ -7,6 +7,7 @@ Extensions:
     - MHA
     
 """
+
 from pathlib import Path
 from typing import Tuple, Union
 
@@ -14,23 +15,25 @@ import nibabel as nib
 import numpy as np
 import pydicom as dicom
 import SimpleITK as sitk
+from utils.custom_type import MedicalImage, PathMedicalImage
 
-from .custom_type import PathType
+from .custom_type import PathNpType, PathType
 from .helper_path import path_in
 
 
-def reader(
-    path: PathType,
-) -> nib.Nifti1Image or dicom.dataset.FileDataset or sitk.Image:
+def reader(path: PathMedicalImage) -> PathMedicalImage:
     """
     Read the medical image based on its file extension.
 
     Parameters:
-        path (Union[str, Path]): Path to the image.
+        path (Union[str, Path, np.ndarray]): Path to the image or an already loaded image.
 
     Returns:
         Loaded image object.
     """
+    if isinstance(path, MedicalImage):
+        return path
+
     path = path_in(path)
     if path.suffix in [".nii", ".nii.gz"]:
         return nib.load(path)
@@ -42,7 +45,7 @@ def reader(
         raise TypeError(f"Unsupported file type: {path.suffix}")
 
 
-def im2arr(path: PathType) -> np.ndarray:
+def im2arr(path: PathNpType) -> np.ndarray:
     """
     Convert the medical image to a numpy array based on its file extension.
 
@@ -52,7 +55,12 @@ def im2arr(path: PathType) -> np.ndarray:
     Returns:
         Image data as a numpy array.
     """
+
+    if isinstance(path, np.ndarray):
+        return path
+
     path = path_in(path)
+
     if path.suffix in [".nii", ".nii.gz"]:
         return nib.load(path).get_fdata()
     elif path.suffix == ".dcm":
@@ -64,6 +72,9 @@ def im2arr(path: PathType) -> np.ndarray:
         return sitk.GetArrayFromImage(sitk_image)
     elif path.suffix == ".npy":
         return np.load(path)
+
+    elif path.suffix == ".npz":
+        return np.load(path)["arr_0"]
     else:
         raise TypeError(f"Unsupported file type: {path.suffix}")
 

@@ -22,8 +22,11 @@ from .utils import (
     read_image_mask,
 )
 
+
 from .utils.array_profile import profile
 from .utils.array_threshold import compute_thresholds
+
+# from .utils import significant_slices
 
 ### PLOT 2D ###
 # from .plots.plot2d.images import (
@@ -79,7 +82,7 @@ from .multimodal import save_dicom_metadata, filter_dicom
 
 from .preprocess import *
 
-from .feats.collage import compute_stats_collage
+# from .feats.collage import compute_stats_collage
 
 # from .nifti.helper import nii3d_to_annotated2d, nii_mask3d_to_2d
 
@@ -90,4 +93,4 @@ from .feats.collage import compute_stats_collage
 
 # __version__ = version()
 
-__version__ = "0.9.5"
+__version__ = "1.1.1"

@@ -5,6 +5,7 @@ from typing import List, Union
 
 import numpy as np
 from scipy.stats import kurtosis, skew
+from utils import significant_slices
 
 from .main import Collage
 
@@ -70,26 +71,6 @@ def compute_collage3d(
     return feats
 
 
-def significant_slice_idx_data(mask_bool) -> tuple:
-    """_summary_
-
-    Args:
-        mask_bool (_type_): _description_
-
-    Returns:
-        tuple: _description_
-    """
-    z_sum = np.sum(mask_bool, axis=(0, 1))
-
-    most_value_slices = np.argsort(z_sum)[::-1]
-
-    num_nonzero_slices = np.count_nonzero(z_sum)
-
-    most_value_nonzero_slices = most_value_slices[:num_nonzero_slices]
-
-    return most_value_nonzero_slices, num_nonzero_slices
-
-
 def collage3d(
     image: np.ndarray,
     mask: np.ndarray,
@@ -137,7 +118,13 @@ def collage3d(
         if isinstance(padding, bool):
             padding = 11
 
-        most_value_nonzero_slices, _ = significant_slice_idx_data(mask)
+        most_value_nonzero_slices, _ = significant_slices(mask)
+
+        if most_value_nonzero_slices.size == 0:
+            raise ValueError(
+                "No significant slices found in mask, mask is either empty or not binary"
+            )
+
         min = most_value_nonzero_slices.min() - padding
         max = most_value_nonzero_slices.max() + padding
         print(f"min: {min}, max: {max}")

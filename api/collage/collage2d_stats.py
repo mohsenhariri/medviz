@@ -1,5 +1,6 @@
-import medviz as viz
 from pathlib import Path
+
+import medviz as viz
 
 image = Path(
     "/storage/sync/git/mohsen/medviz/test_local/dataset/gargi/MRE_005__BH_AX_Res_ISO_crp.nii"

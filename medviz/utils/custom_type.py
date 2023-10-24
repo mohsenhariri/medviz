@@ -1,7 +1,10 @@
 from pathlib import Path
-from typing import Iterable, List, Union
+from typing import Iterable, List, Tuple, Union
 
+import nibabel as nib
 import numpy as np
+import pydicom as dicom
+import SimpleITK as sitk
 
 PathType = Union[str, Path]
 # example:
@@ -20,4 +23,12 @@ PathTypeIter = Union[str, Path, Iterable[str], Iterable[Path]]
 
 StrLst = List[str]
 
+PathNpType = Union[PathType, np.ndarray]
+
 NumLst = List[np.ndarray]
+
+MedicalImage = Union[nib.Nifti1Image, dicom.dataset.FileDataset, sitk.Image, np.ndarray]
+
+PathMedicalImage = Union[PathType, MedicalImage]
+
+TupleNp = Tuple[np.ndarray, np.ndarray]
