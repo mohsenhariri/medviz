@@ -38,6 +38,21 @@ plot-plot2d_images:
 plot-plot2Dfrom3DMostVlueMask:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/plot/plot2Dfrom3DMostVlueMask.py
 
+collage-collage3d:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/collage/collage3d.py
+
+collage-collage3d_2dslice:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/collage/collage3d_2dslice.py
+
+collage-collage2d_stats:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/collage/collage2d_stats.py
+
+utils-profile:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/utils/profile.py
+
+utils-mask-zero_out:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/utils/mask/zero_out.py
+
 features-collage3d:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python api/features/collage3d.py
 

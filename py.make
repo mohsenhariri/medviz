@@ -64,6 +64,9 @@ utils-helper_path:
 utils-array_threshold:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/utils/array_threshold.py
 
+utils-helper_reader:
+		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/utils/helper_reader.py
+
 utils-__init__:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/utils/__init__.py
 
@@ -75,9 +78,6 @@ utils-log:
 
 utils-utility:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/utils/utility.py
-
-utils-reader:
-		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/utils/reader.py
 
 utils-custom_type:
 		/home/mohsen/envs/github/medviz/env_home_linux_3.11/bin/python medviz/utils/custom_type.py
