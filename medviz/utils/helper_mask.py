@@ -1,7 +1,8 @@
 import nibabel as nib
 import numpy as np
-from utils.custom_type import TupleNp
-from utils.helper_reader import im2arr, reader
+
+from .custom_type import TupleNp
+from .helper_reader import im2arr, reader
 
 
 def get_characteristics(mask_path) -> dict:

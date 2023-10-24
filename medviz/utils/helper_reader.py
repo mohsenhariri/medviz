@@ -15,9 +15,8 @@ import nibabel as nib
 import numpy as np
 import pydicom as dicom
 import SimpleITK as sitk
-from utils.custom_type import MedicalImage, PathMedicalImage
 
-from .custom_type import PathNpType, PathType
+from .custom_type import MedicalImage, PathMedicalImage, PathNpType
 from .helper_path import path_in
 
 

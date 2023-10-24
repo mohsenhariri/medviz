@@ -5,8 +5,8 @@ from typing import List, Union
 
 import numpy as np
 from scipy.stats import kurtosis, skew
-from utils import significant_slices
 
+from ...utils import significant_slices
 from .main import Collage
 
 logger = logging.getLogger()
