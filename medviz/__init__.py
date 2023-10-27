@@ -20,6 +20,7 @@ from .utils import (
     path_in,
     im2arr,
     read_image_mask,
+    reader,
 )
 
 
@@ -93,4 +94,4 @@ from .preprocess import *
 
 # __version__ = version()
 
-__version__ = "1.1.1"
+__version__ = "1.1.2"

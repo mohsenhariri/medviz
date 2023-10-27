@@ -1,64 +1,60 @@
-import nibabel as nib
+from typing import Optional
+
 import numpy as np
-from scipy.ndimage import zoom
+import SimpleITK as sitk
 
-from ..utils import path_in, save_path_file
+from ..utils import PathType, path_in, save_path_file
 
 
-def resample(input_path, output_path, new_voxel_size, method):
-    input_path = path_in(input_path)
+def resample(
+    path: PathType,
+    voxel_size: list = [1.0, 1.0, 1.0],
+    method: str = "trilinear",
+    out_path: Optional[PathType] = None,
+    file_name: Optional[str] = None,
+):
+    path = path_in(path)
+    itk_image = sitk.ReadImage(path)
 
-    # Load the input NIfTI image
-    img = nib.load(input_path)
-    data = img.get_fdata()
-    affine = img.affine
+    original_spacing = itk_image.GetSpacing()
+    original_size = itk_image.GetSize()
+    print(f"original_size: {original_size}")
+    print(f"original_spacing: {original_spacing}")
 
-    header = img.header
-    voxel_dims = header.get_zooms()[:3]
-    current_voxel_size = voxel_dims
+    out_size = [
+        int(np.round(original_size[0] * (original_spacing[0] / voxel_size[0]))),
+        int(np.round(original_size[1] * (original_spacing[1] / voxel_size[1]))),
+        int(np.round(original_size[2] * (original_spacing[2] / voxel_size[2]))),
+    ]
 
-    print("Current voxel size", current_voxel_size)
-    current_voxel_size = np.array(current_voxel_size)
+    resample = sitk.ResampleImageFilter()
+    resample.SetOutputSpacing(voxel_size)
+    resample.SetSize(out_size)
+    resample.SetOutputDirection(itk_image.GetDirection())
+    resample.SetOutputOrigin(itk_image.GetOrigin())
+    resample.SetTransform(sitk.Transform())
+    resample.SetDefaultPixelValue(itk_image.GetPixelIDValue())
 
-    scaling_factors = current_voxel_size / new_voxel_size
-    print("Scaling factors", scaling_factors)
+    if method == "nearest":
+        resample.SetInterpolator(sitk.sitkNearestNeighbor)
+    elif method == "trilinear":
+        resample.SetInterpolator(sitk.sitkLinear)
+    else:
+        raise ValueError("Unknown interpolation method")
 
-    # Compute the new shape after resampling
-    print("Input shape", data.shape)
-    new_shape = np.ceil(data.shape * scaling_factors).astype(int)
-    print("Output shape", new_shape)
+    resampled_image = resample.Execute(itk_image)
 
-    if method == "trilinear":
-        # Use Trilinear interpolation to resample the data
-        resampled_data = zoom(data, scaling_factors, order=1)
-    elif method == "nearest":
-        resampled_data = np.zeros(new_shape, dtype=data.dtype)
+    print(f"resampled_size: {resampled_image.GetSize()}")
+    print(f"resampled_spacing: {resampled_image.GetSpacing()}")
 
-        # Iterate over each voxel in the resampled image
-        for i in range(new_shape[0]):
-            for j in range(new_shape[1]):
-                for k in range(new_shape[2]):
-                    # Compute the corresponding voxel indices in the original image
-                    orig_i = int(i / scaling_factors[0])
-                    orig_j = int(j / scaling_factors[1])
-                    orig_k = int(k / scaling_factors[2])
+    if not out_path:
+        out_path = path.parent
 
-                    if (
-                        0 <= orig_i < data.shape[0]
-                        and 0 <= orig_j < data.shape[1]
-                        and 0 <= orig_k < data.shape[2]
-                    ):
-                        resampled_data[i, j, k] = data[orig_i, orig_j, orig_k]
+    if not file_name:
+        file_name = path.stem + f"_resampled_{method}" + path.suffix
 
-    # Adjust affine to reflect changed voxel spacing
-    new_affine = nib.affines.rescale_affine(
-        affine, resampled_data.shape, new_voxel_size
-    )
+    full_path = save_path_file(out_path / file_name, path.suffix)
+    sitk.WriteImage(resampled_image, str(full_path))
+    print(f"Saved to {full_path}")
 
-    # Create a new NIfTI image with resampled data and the same affine
-    resampled_img = nib.Nifti1Image(resampled_data, new_affine)
-
-    # Save the resampled image to the output path
-    save_path = save_path_file(output_path, suffix=".nii")
-
-    nib.save(resampled_img, save_path)
+    return resampled_image
