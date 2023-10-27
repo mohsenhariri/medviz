@@ -1,18 +1,38 @@
-from typing import Optional
+from typing import Optional, List
 
 import numpy as np
 import SimpleITK as sitk
 
 from ..utils import PathType, path_in, save_path_file
 
-
+# change list to tuple
 def resample(
     path: PathType,
-    voxel_size: list = [1.0, 1.0, 1.0],
+    voxel_size: List[float] = [1.0, 1.0, 1.0],
     method: str = "trilinear",
     out_path: Optional[PathType] = None,
     file_name: Optional[str] = None,
 ):
+    """
+    Resamples an image to the specified voxel size using the given method.
+
+    Parameters:
+    - path (PathType): Path to the input image to be resampled.
+    - voxel_size (list[float], default=[1.0, 1.0, 1.0]): Desired output voxel size.
+    - method (str, default="trilinear"): Interpolation method to be used. Options include "nearest" and "trilinear".
+    - out_path (Optional[PathType], default=None): Directory path to save the resampled image. If not provided, it uses the input image directory.
+    - file_name (Optional[str], default=None): Name for the output resampled file. If not provided, it appends "_resampled_{method}" to the original file name.
+
+    Returns:
+    - sitk.Image: The resampled SimpleITK image.
+
+    Raises:
+    - ValueError: If an unknown interpolation method is provided.
+
+    Notes:
+    Prints out the original and resampled size and spacing information.
+    """
+
     path = path_in(path)
     itk_image = sitk.ReadImage(path)
 
