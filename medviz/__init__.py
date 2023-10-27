@@ -83,7 +83,7 @@ from .multimodal import save_dicom_metadata, filter_dicom
 
 from .preprocess import *
 
-# from .feats.collage import compute_stats_collage
+from .feats import *
 
 # from .nifti.helper import nii3d_to_annotated2d, nii_mask3d_to_2d
 
