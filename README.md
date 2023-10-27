@@ -54,6 +54,17 @@ If your OS doesn't have a backend GUI to render Matplotlib, you need to install 
     export QT_QPA_PLATFORM=wayland
 ```
 
+
+### [Utility Functions for Path Handling](https://github.com/mohsenhariri/medviz/blob/main/medviz/utils/helper_path.py)
+
+- path_in: Converts a given path to an absolute path, optionally using the ROOT_IN environment variable as a base.
+
+- save_path_dir: Validates and ensures the existence of a directory path, creating it if necessary. It can also use the ROOT_OUT environment variable as a base.
+
+- save_path_file: Generates a unique save path for a file, appends a timestamp if the file already exists, and ensures its parent directory exists.
+
+
+
 ### Slider- To do
 
 - [x] Max
