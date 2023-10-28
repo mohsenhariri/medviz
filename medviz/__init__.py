@@ -20,7 +20,6 @@ from .utils import (
     path_in,
     im2arr,
     read_image_mask,
-    reader,
 )
 
 

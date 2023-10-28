@@ -54,6 +54,7 @@ If your OS doesn't have a backend GUI to render Matplotlib, you need to install 
     export QT_QPA_PLATFORM=wayland
 ```
 
+## Utility Helpers
 
 ### [Utility Functions for Path Handling](https://github.com/mohsenhariri/medviz/blob/main/medviz/utils/helper_path.py)
 

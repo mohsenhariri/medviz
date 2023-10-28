@@ -1,9 +1,10 @@
-from typing import Optional, List
+from typing import List, Optional
 
 import numpy as np
 import SimpleITK as sitk
 
 from ..utils import PathType, path_in, save_path_file
+
 
 # change list to tuple
 def resample(
