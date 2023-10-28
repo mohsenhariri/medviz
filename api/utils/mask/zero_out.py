@@ -8,6 +8,7 @@ multi_value_mask_path = Path(
 )
 
 mask = viz.utils.im2arr(multi_value_mask_path)
+# or mask = viz.im2arr(multi_value_mask_path)
 
 mask_binary1 = viz.utils.zero_out(mask, 1)
 mask_binary2 = viz.utils.zero_out(mask, 2)
