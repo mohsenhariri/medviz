@@ -79,7 +79,6 @@ If your OS doesn't have a backend GUI to render Matplotlib, you need to install 
 
 ## Plotting
 
-
 ### 3D plots
 1. Basic Usage:
 Plot a single image without any mask:
@@ -179,6 +178,126 @@ You can also combine multiple options for a comprehensive view:
     viz.plot3d(images, masks=masks, mask_colors=mask_colors, titles=titles, save_path='path/to/save_directory/')
 ```
 
+### GIFs
+
+Method signature:
+
+```python
+    def gif(
+        image: Union[str, Path, np.ndarray],
+        masks: Optional[Union[str, Path, np.ndarray, List[Union[str, Path, np.ndarray]]]] = None,
+        mask_colors: Optional[List[str]] = None,
+        start_slice: Optional[int] = 0,
+        end_slice: Optional[int] = None,
+        slices: Optional[List[int]] = None,
+        cmap: str = "gray",
+        plane: str = "axial",
+        save_path: Union[str, Path] = "output.gif",
+        duration: int = 100,
+        segments_title: Optional[List[str]] = None
+    ) -> None:
+```
+
+#### Usages
+
+load image and mask(s) from file path:
+
+```python
+   image = 'path/to/image.nii' or 'path/to/image.nii.gz' or 'path/to/image.mha' or 'path/to/image.dcm'
+   mask = 'path/to/mask.nii' or 'path/to/mask.nii.gz' or 'path/to/mask.mha' or 'path/to/mask.dcm'
+   masks = ['path/to/mask1.nii', 'path/to/mask2.nii']
+
+```
+
+1. Basic Usage:
+
+Generate a GIF from a 3D image without any masks:
+
+```python
+    viz.gif(image)
+```
+This will save the GIF as output.gif in the current directory.
+
+2. Set save path:
+```python
+    viz.gif(image, save_path='path/to/save_directory/')
+```
+
+This will save the GIF as output.gif in the specified directory.
+
+3. Overlaying Mask
+
+To overlay mask on the image:
+
+```python
+    viz.gif(image, mask=mask)
+```
+
+4. Overlaying Multiple Masks
+
+To overlay multiple masks on the image:
+
+```python
+    viz.gif(image, masks=masks)
+```
+
+This will overlay the masks in the order they are specified in the list.
+
+5. Using Custom Colors
+
+To specify custom colors for the masks:
+
+```python
+    viz.gif(image, masks=masks, mask_colors=['red', 'green'])
+```
+
+6. Displaying Titles
+
+For adding titles to the plotted images:
+
+```python
+    viz.gif(image, masks=masks, mask_colors=['red', 'green'], segments_title=['Segment 1', 'Segment 2'])
+```
+
+7. Specifying Display Plane
+
+You can visualize the images in different planes:
+
+```python
+    viz.gif(image, plane="sagittal")
+```
+
+8. Specifying Slices
+
+To specify the slices to be included in the GIF:
+
+```python
+    viz.gif(image, slices=[0, 10, 20, 30, 40])
+```
+
+9. Define a range of slices
+
+To specify a range of slices to be included in the GIF:
+
+```python
+    viz.gif(image, start_slice=20, end_slice=40)
+```
+
+10. Specifying Duration
+
+To specify the duration of each frame in the GIF, the default is 100ms:
+
+```python
+    viz.gif(image, duration=200)
+```
+
+11. Combining Multiple Options
+
+You can also combine multiple options for a comprehensive view:
+
+```python
+    viz.gif(image, masks=masks, mask_colors=['red', 'green'], segments_title=['Segment 1', 'Segment 2'], slices=[0, 10, 20, 30, 40], save_path='path/to/save_directory/')
+```
 
 ## 2D plots
 1. 2D images.

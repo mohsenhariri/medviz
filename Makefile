@@ -178,6 +178,8 @@ sort:
 
 sort-api:
 		isort $(API)
+
+formatter: sort sort-api format format-api
 		
 type:
 		mypy

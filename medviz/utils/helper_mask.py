@@ -5,7 +5,7 @@ from .custom_type import TupleNp
 from .helper_reader import im2arr
 
 
-def get_characteristics(mask_path) -> dict:
+def mask_characteristics(mask_path) -> dict:
     """
     This function takes in a path to a mask and returns a dictionary of characteristics of the mask.
     The characteristics are:
@@ -46,10 +46,7 @@ def get_characteristics(mask_path) -> dict:
 def significant_slices(mask) -> TupleNp:
     mask = im2arr(mask)
 
-    # print(mask.shape)
-    # exit()
-
-    if get_characteristics(mask)["mask_type"] != "Binary":
+    if mask_characteristics(mask)["mask_type"] != "Binary":
         print(f"Mask {mask} is not binary.")
         return np.array([]), 0
     else:
@@ -85,7 +82,7 @@ def significant_slice_idx(mask_path) -> tuple:
     mask_nb = nib.load(mask_path)
     mask = mask_nb.get_fdata()
 
-    if get_characteristics(mask_path)["mask_type"] != "Binary":
+    if mask_characteristics(mask_path)["mask_type"] != "Binary":
         print(f"Mask {mask_path} is not binary.")
     else:
         mask = mask.astype(np.bool_)
@@ -122,39 +119,39 @@ def convert_mask(mask_path, true_value=1):
     return mask_data_bool
 
 
-def mask_path_to_data_ax(mask_path):
-    mask = nib.load(mask_path)
-    mask_data = mask.get_fdata()
+# def mask_path_to_data_ax(mask_path):
+#     mask = nib.load(mask_path)
+#     mask_data = mask.get_fdata()
 
-    mask_data_bool = mask_data.astype(np.bool_)
-    mask_data_bool_rot = np.flip(np.rot90(mask_data_bool, axes=(1, 0)), axis=1)
-    # mask_data = np.ma.masked_where(mask_data == False, mask_data)
-    return mask_data_bool_rot
-
-
-def mask_path_to_data_sag(mask_path):
-    mask = nib.load(mask_path)
-    mask_data = mask.get_fdata()
-
-    mask_data_bool = mask_data.astype(np.bool_)
-    mask_data_bool_rot = np.flip(np.rot90(mask_data_bool, axes=(1, 2)), axis=1)
-    # mask_data = np.ma.masked_where(mask_data == False, mask_data)
-    return mask_data_bool_rot
+#     mask_data_bool = mask_data.astype(np.bool_)
+#     mask_data_bool_rot = np.flip(np.rot90(mask_data_bool, axes=(1, 0)), axis=1)
+#     # mask_data = np.ma.masked_where(mask_data == False, mask_data)
+#     return mask_data_bool_rot
 
 
-def image_path_to_data_ax(mask_path):
-    image = nib.load(mask_path)
-    image_data = image.get_fdata()
-    image_data_rot = np.flip(np.rot90(image_data, axes=(1, 0)), axis=1)
-    return image_data_rot
+# def mask_path_to_data_sag(mask_path):
+#     mask = nib.load(mask_path)
+#     mask_data = mask.get_fdata()
+
+#     mask_data_bool = mask_data.astype(np.bool_)
+#     mask_data_bool_rot = np.flip(np.rot90(mask_data_bool, axes=(1, 2)), axis=1)
+#     # mask_data = np.ma.masked_where(mask_data == False, mask_data)
+#     return mask_data_bool_rot
 
 
-def image_path_to_data_sag(mask_path):
-    image = nib.load(mask_path)
-    image_data = image.get_fdata()
+# def image_path_to_data_ax(mask_path):
+#     image = nib.load(mask_path)
+#     image_data = image.get_fdata()
+#     image_data_rot = np.flip(np.rot90(image_data, axes=(1, 0)), axis=1)
+#     return image_data_rot
 
-    image_data_rot = np.flip(np.rot90(image_data, axes=(1, 2)), axis=1)
-    return image_data_rot
+
+# def image_path_to_data_sag(mask_path):
+#     image = nib.load(mask_path)
+#     image_data = image.get_fdata()
+
+#     image_data_rot = np.flip(np.rot90(image_data, axes=(1, 2)), axis=1)
+#     return image_data_rot
 
 
 def expand(mask_path, expand_factor=5):
@@ -190,6 +187,7 @@ def mask_expand(mask_expert_path, mask_paths, expand_factor=5):
 def zero_out(mask_data: np.ndarray, mask_value: int) -> np.ndarray:
     """Zero out all values in the array except for the given value `mask_value` and 0."""
 
+    mask_data = im2arr(mask_data)
     # Create a copy of the input array to avoid modifying the original array
     mask_data_copy = mask_data.copy()
 
