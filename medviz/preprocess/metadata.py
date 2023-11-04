@@ -48,9 +48,10 @@ def metadata(
 
             raise e
 
-        print(reader)
-
-        merged_dict = _metadata_sitk(image_and_properties_itk)
+        merged_dict = {
+            "name": image_path.name,
+            **_metadata_sitk(image_and_properties_itk),
+        }
 
         if reader == "nibabel":
             metadata_nib = _metadata_nibabel(image_and_properties)
