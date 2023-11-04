@@ -1,6 +1,38 @@
-# Plotting
+Plotting
+=================
+- [Plotting](#plotting)
+  - [3D plots](#3d-plots)
+    - [Usages](#usages)
+  - [GIFs](#gifs)
+    - [Usages](#usages-1)
 
 ## 3D plots
+
+Method signature:
+
+```python
+def plot3d(
+    images: Union[str, Path, np.ndarray, List[Union[str, Path, np.ndarray]]],
+    masks: Optional[
+        Union[
+            str,
+            Path,
+            np.ndarray,
+            List[Union[str, Path, np.ndarray]],
+        ]
+    ] = None,
+    rows: Optional[int] = None,
+    columns: Optional[int] = None,
+    mask_colors: Optional[List[str]] = None,
+    cmap: str = "gray",
+    titles: Optional[Union[str, List[str]]] = None,
+    plane: str = "axial",
+    save_path: Optional[Union[str, Path]] = None,
+) -> None:
+```
+
+### Usages 
+
 1. Basic Usage:
 Plot a single image without any mask:
 

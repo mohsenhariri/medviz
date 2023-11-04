@@ -25,7 +25,6 @@ def gif(
     save_path: Union[str, Path] = "output.gif",
     duration: int = 100,  # Duration for each frame in the GIF (in milliseconds)
 ) -> None:
-    
     """
     Creates a GIF animation from slices of a 3D image, with optional mask overlays.
 
@@ -45,7 +44,7 @@ def gif(
     Returns:
     - None: The function saves the resulting GIF to save_path.
     """
-    
+
     image_data = _read_images(image, plane=plane)
     if masks:
         masks_data = _read_masks(masks, plane=plane)
