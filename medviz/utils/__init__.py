@@ -2,9 +2,6 @@ from .custom_type import PathType, PathTypeLst, PathTypeIter, StrLst, NumLst, Tu
 from .utility import now
 from .array_profile import profile
 from .array_threshold import compute_thresholds
-
-# from .helper_path import path_in, save_path_file, save_path_dir
-
 from .helper_mask import (
     mask_characteristics,
     significant_slice_idx,
@@ -21,7 +18,6 @@ from .helper_mask import (
     zero_out,
 )
 
-
 from .helper_path import path_in, save_path_file, save_path_dir
 
-from .helper_reader import im2arr, read_image_mask
+from .helper_reader import im2arr, read_image_mask, path2loader

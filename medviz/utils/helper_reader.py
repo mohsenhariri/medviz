@@ -20,6 +20,34 @@ from .custom_type import MedicalImage, PathMedicalImage, PathNpType
 from .helper_path import path_in
 
 
+def path2loader(path: PathMedicalImage) -> PathMedicalImage:
+    if isinstance(path, MedicalImage):
+        return path
+
+    path_obj = Path(path)
+    suffixes = path_obj.suffixes
+
+    try:
+        if suffixes[-2:] == [".nii", ".gz"] or suffixes[-1:] == [".nii"]:
+            image_and_properties = nib.load(path)
+            reader = "nibabel"
+
+        elif suffixes[-1:] == [".dcm"]:
+            image_and_properties = dicom.dcmread(path)
+            reader = "pydicom"
+        else:
+            image_and_properties = None
+            reader = None
+
+        image_and_properties_itk = sitk.ReadImage(str(path))
+
+    except Exception as e:
+        print("Error reading image", e)
+        raise e
+
+    return (image_and_properties, reader, image_and_properties_itk)
+
+
 def im2arr(*paths: PathNpType) -> Union[np.ndarray, Tuple[np.ndarray]]:
     """
     Convert one or more medical images to numpy arrays based on their file extensions.
