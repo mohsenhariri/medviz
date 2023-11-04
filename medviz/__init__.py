@@ -15,6 +15,7 @@ from .utils import (
     path_in,
     im2arr,
     read_image_mask,
+    path2loader,
     # mask_characteristics,
 )
 
@@ -24,7 +25,6 @@ from .utils.array_profile import profile
 from .utils.array_threshold import compute_thresholds
 
 # from .utils import significant_slices
-
 
 from .multimodal import save_dicom_metadata, filter_dicom
 
@@ -41,4 +41,4 @@ from .feats import *
 
 # __version__ = version()
 
-__version__ = "1.1.4"
+__version__ = "1.1.5"
