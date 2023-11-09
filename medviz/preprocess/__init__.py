@@ -2,3 +2,4 @@
 from .match_image_mask import match_image_masks
 from .resampling import resample
 from .metadata import metadata
+from .hu import get_hu

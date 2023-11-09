@@ -24,7 +24,7 @@ def path2loader(path: PathMedicalImage) -> PathMedicalImage:
     if isinstance(path, MedicalImage):
         return path
 
-    path_obj = Path(path)
+    path_obj = path_in(path)
     suffixes = path_obj.suffixes
 
     try:
