@@ -3,10 +3,11 @@ import pickle
 from pathlib import Path
 from typing import List
 
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import kurtosis, skew
 
-from .main import Collage
+from .main import Collage, HaralickFeature
 
 logger = logging.getLogger()
 
@@ -30,7 +31,12 @@ descriptors = [
 
 
 def compute_collage2d(
-    image: np.ndarray, mask: np.ndarray, haralick_windows: List[int]
+    image: np.ndarray,
+    mask: np.ndarray,
+    haralick_windows: int,
+    feature_maps=False,
+    save_path_feature_maps=None,
+    save_raw_path=False,
 ) -> np.ndarray:
     feats = {}
 
@@ -47,6 +53,45 @@ def compute_collage2d(
         collage_feats = collage.execute()
 
         print(collage_feats.shape)
+
+        if save_raw_path:
+            np.save(save_raw_path, collage_feats)
+
+        if feature_maps:
+            which_features = [
+                HaralickFeature.AngularSecondMoment,
+                HaralickFeature.Contrast,
+                HaralickFeature.Correlation,
+                HaralickFeature.SumOfSquareVariance,
+                HaralickFeature.SumAverage,
+                HaralickFeature.SumVariance,
+                HaralickFeature.SumEntropy,
+                HaralickFeature.Entropy,
+                HaralickFeature.DifferenceVariance,
+                HaralickFeature.DifferenceEntropy,
+                HaralickFeature.InformationMeasureOfCorrelation1,
+                HaralickFeature.InformationMeasureOfCorrelation2,
+                HaralickFeature.MaximalCorrelationCoefficient,
+            ]
+
+            alpha = 0.5
+            extent = 0, image.shape[1], 0, image.shape[0]
+
+            for which_feature in which_features:
+                collage_output = collage.get_single_feature_output(which_feature)
+
+                figure = plt.figure(figsize=(15, 15))
+                plt.imshow(image, cmap=plt.cm.gray, extent=extent)
+                plt.imshow(collage_output, cmap=plt.cm.jet, alpha=alpha, extent=extent)
+
+                figure.axes[0].get_xaxis().set_visible(False)
+                figure.axes[0].get_yaxis().set_visible(False)
+
+                plt.title(f"Feature map: {which_feature.name}")
+
+                save_path_name = f"{save_path_feature_maps}_{which_feature.name}.png"
+                plt.savefig(save_path_name)
+                plt.close()
 
         for collage_idx, descriptor in enumerate(descriptors):
             print(f"Processing collage {descriptor}")
@@ -75,6 +120,8 @@ def collage2d(
     window_sizes: List[int],
     save_path,
     out_name: str,
+    feature_maps=False,
+    save_raw=False,
 ):
     """_summary_collage2d
     Compute collage features for a given image and mask.
@@ -91,19 +138,26 @@ def collage2d(
 
     """
     for ws in window_sizes:
-        feats = compute_collage2d(
-            image,
-            mask,
-            haralick_windows=ws,
-        )
-
-        print("Final stats", feats)
-
         if not Path(save_path).exists():
             Path(save_path).mkdir(parents=True, exist_ok=True)
 
         save_path_pickle = Path(save_path) / f"Feats_Col_{out_name}_ws_{ws}.pkl"
         save_path_npy = Path(save_path) / f"Feats_Col_{out_name}_ws_{ws}.npy"
+        save_path_feature_maps = Path(save_path) / f"FeatureMaps_{out_name}_ws_{ws}"
+
+        save_raw_path = (
+            Path(save_path) / f"Raw_{out_name}_ws_{ws}.npy" if save_raw else False
+        )
+
+        feats = compute_collage2d(
+            image,
+            mask,
+            haralick_windows=ws,
+            feature_maps=feature_maps,
+            save_path_feature_maps=save_path_feature_maps,
+            save_raw_path=save_raw_path,
+        )
+        print("Final stats", feats)
 
         with open(save_path_pickle, "wb") as file:
             pickle.dump(feats, file)
