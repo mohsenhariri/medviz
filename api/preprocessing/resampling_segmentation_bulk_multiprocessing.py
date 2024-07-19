@@ -3,19 +3,19 @@ from pathlib import Path
 
 import medviz as viz
 
-base_path = Path("/home/mohsen/dataset/nii_version/Grp1_TI_nii_raw")
-mask_paths = base_path.glob("*.nii")
+base_path = Path("Input Data Path")
+mask_paths = base_path.glob("*.mha")
 
-output_path = Path("/media/ext/hdd5t/dataset/Grp1_TI_nii_resampled")
+output_path = Path("Input Output Path")
 
 
 def resample_mask(mask_path):
     print(f"Resampling {mask_path.name}...")
     mask_resampled_path = output_path / mask_path.name
     viz.resample(
-        input_path=mask_path,
-        output_path=mask_resampled_path,
-        new_voxel_size=[1, 1, 1],
+        path=mask_path,
+        out_path=mask_resampled_path,
+        voxel_size=[1, 1, 1],
         method="nearest",
     )
 
